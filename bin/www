@@ -1,9 +1,11 @@
-#!/usr/bin/env node
-
+#!/usr/bin/env nodemon
+// Requires
 var app 	 = require("./../app");
+
 // Constants
 var port     = process.env.PORT || 8080;
 
-app.listen(port,function(){
-	console.log('The magic happens on port ' + port);
+// Begin listening for incoming request
+app.listen(8080, function(){
+	console.log("This Magic happens on port 8080")
 });

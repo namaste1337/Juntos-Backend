@@ -22,7 +22,7 @@ app.use(cookieParser()); // read cookies (needed for auth)
 app.use(bodyParser.json()); // Get JSON body information
 
 // required for passport
-app.use(session({ secret: 'ilovescotchscotchyscotchscotch' })); // session secret
+app.use(session({ secret: 'f239hd794298hfd8623b(&F#(HFFHq93rh98wefh23' })); // session secret
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session
@@ -31,4 +31,4 @@ app.use(flash()); // use connect-flash for flash messages stored in session
 require('./app/controllers/session.js')(app, passport); // load our routes and pass in our app and fully configured passport
 
 // Export App as a module
-module.export = app;
+module.exports = app;

@@ -18,7 +18,6 @@ module.exports = function(app, passport) {
 
         // render the page and pass in any flash data if it exists
         // res.render('login.ejs', { message: req.flash('loginMessage') }); 
-        res.setHeader('Content-Type', 'application/json');
         res.send(JSON.stringify({ a: 1 }));
     });
 
