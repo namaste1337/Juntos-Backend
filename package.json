@@ -4,7 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "mocha test/controllers --watch",
+    "test": "mocha test/controllers",
     "start": "./bin/www"
   },
   "author": "",
