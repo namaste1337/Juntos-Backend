@@ -8,6 +8,7 @@ var cookieParser 	= require('cookie-parser');
 var bodyParser   	= require('body-parser');
 var session      	= require('express-session');
 var configDB     	= require('./config/database.js');
+var jsend 			= require('jsend');
 
 // Create Express app instance
 var app      	 	= express();
