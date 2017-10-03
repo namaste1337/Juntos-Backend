@@ -20,6 +20,7 @@ require('./config/passport')(passport); // pass passport for configuration
 app.use(morgan('dev')); // log every request to the console
 app.use(cookieParser()); // read cookies (needed for auth)
 app.use(bodyParser.json()); // Get JSON body information
+app.use(jsend.middleware); //Set up Jsend for standardized responses
 
 // required for passport
 app.use(session({ secret: 'f239hd794298hfd8623b(&F#(HFFHq93rh98wefh23' })); // session secret
