@@ -4,6 +4,8 @@ var mongoose = require('mongoose'),
     autoIncrement = require('mongoose-auto-increment'),
     bcrypt   = require('bcrypt-nodejs');
 
+// Initialize mongoose-auto-increment 
+autoIncrement.initialize(mongoose.connection);
 
 // define the schema for our user model
 var userSchema = mongoose.Schema({
@@ -34,7 +36,6 @@ var userSchema = mongoose.Schema({
 
 });
 
-// methods ======================
 // generating a hash
 userSchema.methods.generateHash = function(password) {
     return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
@@ -46,9 +47,13 @@ userSchema.methods.validPassword = function(password) {
 };
 
 //Add mongoose-auto-increment as a plugin to the users schema
-//the plugin adds an _id(Number) field and will autoincrement 
+//the plugin adds an user_id(Number) field and will autoincrement 
 //when creating a user entity.
-userSchema.plugin(autoIncrement.plugin, 'User');
+userSchema.plugin(autoIncrement.plugin, {
+    model: 'User',
+    field: 'user_id',
+    startAt: 1000
+});
 
 // create the model for users and expose it to our app
 module.exports = mongoose.model('User', userSchema);
