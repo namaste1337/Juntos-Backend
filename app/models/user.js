@@ -13,7 +13,8 @@ var userSchema = mongoose.Schema({
     local            : {
         email        : String,
         password     : String,
-        time         : { type : Date, default: Date.now }
+        time         : { type : Date, default: Date.now },
+        last_update  : { type : Date, default: Date.now }
     },
     facebook         : {
         id           : String,
