@@ -14,7 +14,7 @@ var User            = require('../app/models/user');
 
 //JSON prop constants
 const USERNAME_PROP_TYPE   = "email";
-const PASSWORD_PTOP_TYPE   = "password";
+const PASSWORD_PROP_TYPE   = "password";
 
 // Strategy constants
 const SIGNUP_STRATEGY_KEY  = "json-singup";
@@ -105,7 +105,7 @@ module.exports = function(passport) {
     passport.use(LOGIN_STRATEGY_KEY, new JsonStrategy({
         // by default, local strategy uses username and password, we will override with email
         usernameProp : USERNAME_PROP_TYPE,
-        passwordProp : PASSWORD_PTOP_TYPE,
+        passwordProp : PASSWORD_PROP_TYPE,
         passReqToCallback : true // allows us to pass back the entire request to the callback
     },
     function(req, email, password, done) { // callback with email and password from our form
