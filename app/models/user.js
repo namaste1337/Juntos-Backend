@@ -23,8 +23,8 @@ var userSchema = mongoose.Schema({
 // Static methods
 /////////////////////////
 
-// Removes fields not required not required in the reponse
-// Taked a mongoose userObject as a parameter
+// Removes fields not required for the reponse
+// Takes a mongoose user object as a parameter
 userSchema.statics.clean = function(userObject){
 
     var obj = userObject.toObject();
