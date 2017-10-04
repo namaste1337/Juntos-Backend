@@ -7,6 +7,22 @@ var JsonStrategy = require('passport-json').Strategy;
 // load up the user model
 var User            = require('../app/models/user');
 
+
+///////////////////////////
+// Constants
+//////////////////////////
+
+//JSON prop constants
+const USERNAME_PROP_TYPE   = "email";
+const PASSWORD_PTOP_TYPE   = "password";
+
+// Strategy constants
+const SIGNUP_STRATEGY_KEY  = "json-singup";
+const LOGIN_STRATEGY_KEY   = "json-login";
+
+// Database object constants
+const EMAIL_OBJECT_KEY     = "local.email";
+
 // expose this function to our app using module.exports
 module.exports = function(passport) {
 
@@ -29,15 +45,15 @@ module.exports = function(passport) {
     });
 
     // =========================================================================
-    // LOCAL SIGNUP ============================================================
+    // JSON SIGNUP ============================================================
     // =========================================================================
     // we are using named strategies since we have one for login and one for signup
     // by default, if there was no name, it would just be called 'local'
 
-    passport.use('local-signup', new JsonStrategy({
+    passport.use( SIGNUP_STRATEGY_KEY, new JsonStrategy({
         // by default, local strategy uses username and password, we will override with email
-        usernameField : 'email',
-        passwordField : 'password',
+        usernameProp : USERNAME_PROP_TYPE,
+        passwordProp : PASSWORD_PTOP_TYPE,
         passReqToCallback : true // allows us to pass back the entire request to the callback
     },
     function(req, email, password, done) {
@@ -48,7 +64,7 @@ module.exports = function(passport) {
 
         // find a user whose email is the same as the forms email
         // we are checking to see if the user trying to login already exists
-        User.findOne({ 'local.email' :  email }, function(err, user) {
+        User.findOne({ EMAIL_OBJECT_KEY :  email }, function(err, user) {
             // if there are any errors, return the error
             if (err)
                 return done(err);
@@ -81,22 +97,22 @@ module.exports = function(passport) {
     }));
 
      // =========================================================================
-    // LOCAL LOGIN =============================================================
+    // JSON LOGIN =============================================================
     // =========================================================================
     // we are using named strategies since we have one for login and one for signup
     // by default, if there was no name, it would just be called 'local'
 
-    passport.use('local-login', new JsonStrategy({
+    passport.use(LOGIN_STRATEGY_KEY, new JsonStrategy({
         // by default, local strategy uses username and password, we will override with email
-        usernameField : 'email',
-        passwordField : 'password',
+        usernameProp : USERNAME_PROP_TYPE,
+        passwordProp : PASSWORD_PTOP_TYPE,
         passReqToCallback : true // allows us to pass back the entire request to the callback
     },
     function(req, email, password, done) { // callback with email and password from our form
 
         // find a user whose email is the same as the forms email
         // we are checking to see if the user trying to login already exists
-        User.findOne({ 'local.email' :  email }, function(err, user) {
+        User.findOne({ EMAIL_OBJECT_KEY :  email }, function(err, user) {
             // if there are any errors, return the error before anything else
             if (err)
                 return done(err);
