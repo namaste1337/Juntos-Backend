@@ -20,11 +20,12 @@ module.exports = function(app, passport) {
             res.jsend.success({user: req.user})
     });
 
-    // Process the logut request
+    // Process the logout request
     app.get('/logout', function(req, res) {
         req.logout();
-        reses.jsend.success({unauthenticated: true})
+        res.jsend.success({unauthenticated: true})
     });
+
 };
 
 // route middleware to make sure a user is logged in
