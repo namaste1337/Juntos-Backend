@@ -19,6 +19,26 @@ var userSchema = mongoose.Schema({
 
 });
 
+/////////////////////////
+// Static methods
+/////////////////////////
+
+// Removes fields not required not required in the reponse
+// Taked a mongoose userObject as a parameter
+userSchema.statics.clean = function(userObject){
+
+    var obj = userObject.toObject();
+    delete obj.local.password;
+    delete obj._id;
+    delete obj.__v;
+
+    return obj;
+}
+
+/////////////////////////
+// Instance methods
+/////////////////////////
+
 // generating a hash
 userSchema.methods.generateHash = function(password) {
     return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);

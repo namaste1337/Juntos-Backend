@@ -1,5 +1,6 @@
 // Requires 
 var jsend = require('jsend');
+var User  = require('../models/user');
 
 module.exports = function(app, passport) {
 
@@ -11,13 +12,17 @@ module.exports = function(app, passport) {
     // Process the login request
     app.post('/login', passport.authenticate('json-login'), 
         function(req, res){
-          res.jsend.success({user: req.user})  
+            // Remove the unneeded fields for the response
+            let user = User.clean(req.user);
+            res.jsend.success({user: user})  
     });
 
     // Process the signup request
     app.post('/signup', passport.authenticate('json-signup'), 
         function(req, res){
-            res.jsend.success({user: req.user})
+            // Remove the unneeded fields for the response
+            let user = User.clean(req.user);
+            res.jsend.success({user: user})
     });
 
     // Process the logout request
