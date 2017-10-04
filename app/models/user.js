@@ -15,24 +15,6 @@ var userSchema = mongoose.Schema({
         password     : String,
         time         : { type : Date, default: Date.now },
         last_update  : { type : Date, default: Date.now }
-    },
-    facebook         : {
-        id           : String,
-        token        : String,
-        email        : String,
-        name         : String
-    },
-    twitter          : {
-        id           : String,
-        token        : String,
-        displayName  : String,
-        username     : String
-    },
-    google           : {
-        id           : String,
-        token        : String,
-        email        : String,
-        name         : String
     }
 
 });
