@@ -53,7 +53,7 @@ module.exports = function(passport) {
     passport.use( SIGNUP_STRATEGY_KEY, new JsonStrategy({
         // by default, local strategy uses username and password, we will override with email
         usernameProp : USERNAME_PROP_TYPE,
-        passwordProp : PASSWORD_PTOP_TYPE,
+        passwordProp : PASSWORD_PROP_TYPE,
         passReqToCallback : true // allows us to pass back the entire request to the callback
     },
     function(req, email, password, done) {
