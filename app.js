@@ -30,7 +30,7 @@ app.use(passport.session()); // persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session
 
 // routes 
-require('./app/controllers/session.js')(app, passport); // load our routes and pass in our app and fully configured passport
+require('./app/controllers/sessions.js')(app, passport); // load our routes and pass in our app and fully configured passport
 
 // Export App as a module
 module.exports = app;

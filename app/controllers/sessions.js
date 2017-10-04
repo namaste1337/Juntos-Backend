@@ -5,10 +5,6 @@ var User  = require('../models/user');
 module.exports = function(app, passport) {
 
 
-    // =====================================
-    // LOGIN ===============================
-    // =====================================
-
     // Process the login request
     app.post('/login', passport.authenticate('json-login'), 
         function(req, res){
