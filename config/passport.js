@@ -7,7 +7,6 @@ var JsonStrategy = require('passport-json').Strategy;
 // load up the user model
 var User            = require('../app/models/user');
 
-
 ///////////////////////////
 // Constants
 //////////////////////////
@@ -19,9 +18,6 @@ const PASSWORD_PROP_TYPE   = "password";
 // Strategy constants
 const SIGNUP_STRATEGY_KEY  = "json-signup";
 const LOGIN_STRATEGY_KEY   = "json-login";
-
-// Database object constants
-const EMAIL_OBJECT_KEY     = "local.email";
 
 // expose this function to our app using module.exports
 module.exports = function(passport) {
@@ -66,7 +62,7 @@ module.exports = function(passport) {
 
         // find a user whose email is the same as the forms email
         // we are checking to see if the user trying to login already exists
-        User.findOne({ EMAIL_OBJECT_KEY :  email }, function(err, user) {
+        User.findOne({ "local.email" :  email }, function(err, user) {
             // if there are any errors, return the error
             if (err)
                 return done(err);
@@ -111,21 +107,22 @@ module.exports = function(passport) {
         passReqToCallback : true // allows us to pass back the entire request to the callback
     },
     function(req, email, password, done) { // callback with email and password from our form
-
         // find a user whose email is the same as the forms email
         // we are checking to see if the user trying to login already exists
-        User.findOne({ EMAIL_OBJECT_KEY :  email }, function(err, user) {
+
+        User.findOne({ "local.email" :  email }, function(err, user) {
+   
             // if there are any errors, return the error before anything else
             if (err)
                 return done(err);
 
-            // if no user is found, return the message
-            if (!user)
-                return done(null, false, req.flash('loginMessage', 'No user found.')); // req.flash is the way to set flashdata using connect-flash
+            // // if no user is found, return the message
+            // if (!user)
+            //     return done(null, false, req.flash('loginMessage', 'No user found.')); // req.flash is the way to set flashdata using connect-flash
 
-            // if the user is found but the password is wrong
-            if (!user.validPassword(password))
-                return done(null, false, req.flash('loginMessage', 'Oops! Wrong password.')); // create the loginMessage and save it to session as flashdata
+            // // if the user is found but the password is wrong
+            // if (!user.validPassword(password))
+            //     return done(null, false, req.flash('loginMessage', 'Oops! Wrong password.')); // create the loginMessage and save it to session as flashdata
 
             // all is well, return successful user
             return done(null, user);
