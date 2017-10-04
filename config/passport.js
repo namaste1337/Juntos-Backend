@@ -17,7 +17,7 @@ const USERNAME_PROP_TYPE   = "email";
 const PASSWORD_PROP_TYPE   = "password";
 
 // Strategy constants
-const SIGNUP_STRATEGY_KEY  = "json-singup";
+const SIGNUP_STRATEGY_KEY  = "json-signup";
 const LOGIN_STRATEGY_KEY   = "json-login";
 
 // Database object constants
@@ -25,6 +25,8 @@ const EMAIL_OBJECT_KEY     = "local.email";
 
 // expose this function to our app using module.exports
 module.exports = function(passport) {
+
+
 
     // =========================================================================
     // passport session setup ==================================================
