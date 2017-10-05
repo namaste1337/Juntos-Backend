@@ -20,6 +20,7 @@ module.exports =  function(express, version, passport){
     // Request Handlers 
     /////////////////////////
 
+    // Handles login request
     function login(req, res){
         //Remove the unneeded fields for the response
         let user = User.clean(req.user);
@@ -27,7 +28,7 @@ module.exports =  function(express, version, passport){
     }
 
 
-
+    // Handles signup request
     function signup(req, res){
         //Remove the unneeded fields for the response
         let user = User.clean(req.user);
@@ -35,7 +36,7 @@ module.exports =  function(express, version, passport){
     }
 
 
-
+    // Handles logout request
     function logout(req, res){
         req.logout();
         res.jsend.success({unauthenticated: true})
