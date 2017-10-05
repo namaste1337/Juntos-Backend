@@ -2,7 +2,19 @@
 var jsend = require('jsend');
 var User  = require('../models/user');
 
+
 module.exports =  function(express, version, passport){
+
+    /////////////////////////
+    // Constants
+    /////////////////////////
+
+    const JSON_SINGUP_STRATEGY_KEY = 'json-signup';
+    const JSON_LOGIN_STRATEGY_KEY  = 'json-login';
+    const SIGNUP_ROUTE             = "/signup";
+    const LOGIN_ROUTE              = "/login";
+    const LOGOUT_ROUTE             = "/logout";
+    const EMPTY_PATH               = "";
 
     /////////////////////////
     // Request Handlers 
@@ -33,9 +45,9 @@ module.exports =  function(express, version, passport){
     //Routes
     /////////////////////////
 
-    version.use('/signup', passport.authenticate('json-signup'), express.Router().post("", signup));
-    version.use('/login', passport.authenticate('json-login'), express.Router().post("", login));
-    version.use('/logout', express.Router().post("", logout));
+    version.use(SIGNUP_ROUTE, passport.authenticate(JSON_SINGUP_STRATEGY_KEY), express.Router().post(EMPTY_PATH, signup));
+    version.use(LOGIN_ROUTE, passport.authenticate(JSON_LOGIN_STRATEGY_KEY), express.Router().post(EMPTY_PATH, login));
+    version.use(LOGOUT_ROUTE, express.Router().post(EMPTY_PATH, logout));
 
 };
 
