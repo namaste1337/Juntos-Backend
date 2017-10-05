@@ -37,32 +37,6 @@ module.exports =  function(express, version, passport){
     version.use('/login', passport.authenticate('json-login'), express.Router().post("", login));
     version.use('/logout', express.Router().post("", logout));
 
-
-
-    // // Process the login request
-    // app.post('/login', passport.authenticate('json-login'), 
-    //     function(req, res){
-    //         // Remove the unneeded fields for the response
-    //         let user = User.clean(req.user);
-    //         res.jsend.success({user: user})  
-    // });
-
-    // // Process the signup request
-    // app.post('/signup', passport.authenticate('json-signup'), 
-    //     function(req, res){
-    //         // Remove the unneeded fields for the response
-    //         let user = User.clean(req.user);
-    //         res.jsend.success({user: user})
-    // });
-
-    // // Process the logout request
-    // app.get('/logout', function(req, res) {
-    //     req.logout();
-    //     res.jsend.success({unauthenticated: true})
-    // });
-
-
-
 };
 
 // route middleware to make sure a user is logged in
