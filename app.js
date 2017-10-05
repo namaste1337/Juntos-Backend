@@ -29,8 +29,13 @@ app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session
 
-// routes 
-require('./app/controllers/sessions.js')(app, passport); // load our routes and pass in our app and fully configured passport
+// Router, here we will define our versioning
+let v1 = express.Router();
+// Define version 
+app.use('/v1', v1);
+
+// Version 1 API's
+require('./app/v1/sessions.js')(express, v1, passport); // load our routes and pass in our app and fully configured passport
 
 // Export App as a module
 module.exports = app;
