@@ -40,6 +40,16 @@ module.exports =  function(express, version, passport){
         res.jsend.success({unauthenticated: true})
     }
 
+    //Handles sending password reset email
+    function sendPasswordResetEmail(req, res){
+
+    }
+
+    //Handles password reset
+    function passwordReset(req, res){
+
+    }
+
     /////////////////////////
     //Routes
     /////////////////////////
