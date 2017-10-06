@@ -3,23 +3,16 @@
 /////////////////////////
 
 var request = require("supertest");
-var app		= require("./../../app");
+var app		  = require("./../../app");
+var common  = require("./../common");
 
 /////////////////////////
 // Static methods
 /////////////////////////
 
-// Root API path
-const API_VERSION         = "/api/v1";
 // End points
-const LOGIN_ENDPOINT      = API_VERSION + "/login";
-const SIGNUP_ENDPOINT     = API_VERSION + "/signup";
-// Content Types
-const CONTENT_HEADER      = "Content-Type";
-const CONTENT_HEADER_JSON = "application/json;charset=utf-8"
-// Response codes
-const RESPONSE_CODE_200   = 200;
-const RESPONSE_CODE_400   = 400;
+const LOGIN_ENDPOINT      = common.API_VERSION + "/login";
+const SIGNUP_ENDPOINT     = common.API_VERSION + "/signup";
 // Ints
 const USER_ID_MULTIPLIER  = 100000;
 
@@ -59,7 +52,7 @@ const USER_ID_MULTIPLIER  = 100000;
       request(app)
         .post(SIGNUP_ENDPOINT)
         .send(emptyCredentialsData)
-        .expect(RESPONSE_CODE_400, done);
+        .expect(common.RESPONSE_CODE_400, done);
 
     });
 
@@ -72,7 +65,7 @@ const USER_ID_MULTIPLIER  = 100000;
       request(app)
         .post(SIGNUP_ENDPOINT)
         .send(credentials)
-        .expect(CONTENT_HEADER, /json/, done)
+        .expect(common.CONTENT_HEADER, /json/, done)
 
     });
 
@@ -83,7 +76,7 @@ const USER_ID_MULTIPLIER  = 100000;
       request(app)
         .post(SIGNUP_ENDPOINT)
         .send(credentials)
-        .expect(RESPONSE_CODE_200, done);
+        .expect(common.RESPONSE_CODE_200, done);
 
     });
 
@@ -94,9 +87,9 @@ const USER_ID_MULTIPLIER  = 100000;
 
       request(app)
         .post(SIGNUP_ENDPOINT)
-        .set(CONTENT_HEADER, CONTENT_HEADER_JSON)
+        .set(common.CONTENT_HEADER, common.CONTENT_HEADER_JSON)
         .send(credentials)
-        .expect(RESPONSE_CODE_200, /email/, done);
+        .expect(common.RESPONSE_CODE_200, /email/, done);
 
     });
 
@@ -113,7 +106,7 @@ const USER_ID_MULTIPLIER  = 100000;
 			request(app)
 			  .post(LOGIN_ENDPOINT)        
         .send(emptyCredentialsData)
-			  .expect(RESPONSE_CODE_400, done);
+			  .expect(common.RESPONSE_CODE_400, done);
 
 		});
 
@@ -130,9 +123,9 @@ const USER_ID_MULTIPLIER  = 100000;
 
           request(app)
             .post(LOGIN_ENDPOINT)
-            .set(CONTENT_HEADER, CONTENT_HEADER_JSON)
+            .set(common.CONTENT_HEADER, common.CONTENT_HEADER_JSON)
             .send(credentials)
-            .expect(CONTENT_HEADER, /json/, done);
+            .expect(common.CONTENT_HEADER, /json/, done);
 
         });
 
@@ -150,9 +143,9 @@ const USER_ID_MULTIPLIER  = 100000;
 
           request(app)
             .post(LOGIN_ENDPOINT)
-            .set(CONTENT_HEADER, CONTENT_HEADER_JSON)
+            .set(common.CONTENT_HEADER, common.CONTENT_HEADER_JSON)
             .send(credentials)
-            .expect(RESPONSE_CODE_200, done);
+            .expect(common.RESPONSE_CODE_200, done);
 
         })
 
@@ -170,9 +163,9 @@ const USER_ID_MULTIPLIER  = 100000;
 
           request(app)
             .post(LOGIN_ENDPOINT)
-            .set(CONTENT_HEADER, CONTENT_HEADER_JSON)
+            .set(common.CONTENT_HEADER, common.CONTENT_HEADER_JSON)
             .send(credentials)
-            .expect(RESPONSE_CODE_200, /email/, done);
+            .expect(common.RESPONSE_CODE_200, /email/, done);
 
         })
 
