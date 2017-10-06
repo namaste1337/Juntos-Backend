@@ -151,7 +151,7 @@ const USER_ID_MULTIPLIER  = 100000;
 
     });
 
-    it("Should return a response body with user email infromation", function(done){
+    it("Should return a response body with the user registered email", function(done){
 
       let credentials = generateCredentials();
       let email       = credentials.email;
