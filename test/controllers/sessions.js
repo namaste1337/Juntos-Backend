@@ -20,6 +20,8 @@ const CONTENT_HEADER_JSON = "application/json;charset=utf-8"
 // Response codes
 const RESPONSE_CODE_200   = 200;
 const RESPONSE_CODE_400   = 400;
+// Ints
+const USER_ID_MULTIPLIER  = 100000;
 
 /////////////////////////
 // Test
@@ -37,11 +39,11 @@ const RESPONSE_CODE_400   = 400;
 
   function generateCredentials(){
     
-    let credetialSuffix = Math.floor(Math.random() * 100000);
+    let credentialSuffix = Math.floor(Math.random() * USER_ID_MULTIPLIER);
     
     let credentials = {
-      email:"user000" + credetialSuffix,
-      password:"user" + credetialSuffix
+      email:"user" + credentialSuffix,
+      password:"user" + credentialSuffix
     }
 
     return credentials;
