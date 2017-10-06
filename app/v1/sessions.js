@@ -27,14 +27,12 @@ module.exports =  function(express, version, passport){
         res.jsend.success({user: user}) 
     }
 
-
     // Handles signup request
     function signup(req, res){
         //Remove the unneeded fields for the response
         let user = User.clean(req.user);
         res.jsend.success({user: user}) 
     }
-
 
     // Handles logout request
     function logout(req, res){
@@ -51,17 +49,4 @@ module.exports =  function(express, version, passport){
     version.use(LOGOUT_ROUTE, express.Router().post(EMPTY_PATH, logout));
 
 };
-
-// route middleware to make sure a user is logged in
-function isLoggedIn(req, res, next) {
-
-    // if user is authenticated in the session, carry on 
-    if (req.isAuthenticated())
-        return next();
-
-    // if they aren't redirect them to the home page
-    res.setHeader('Content-Type', 'application/json');
-    res.send(JSON.stringify({ "Error": "Not logged in" }));
-    // res.redirect('/');
-}
 
