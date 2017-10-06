@@ -14,7 +14,7 @@ var jsend 			= require('jsend');
 var app      	 	= express();
 
 // configurations 
-mongoose.createConnection(configDB.url); // connect to our database
+mongoose.connect(configDB.url); // connect to our database
 require('./config/passport')(passport); // pass passport for configuration
 
 // set up our express application
