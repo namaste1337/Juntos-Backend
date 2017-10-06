@@ -37,7 +37,7 @@ const RESPONSE_CODE_400   = 400;
 
   function generateCredentials(){
     
-    let credetialSuffix = Math.random(1,10000);
+    let credetialSuffix = Math.floor(Math.random() * 100000);
     
     let credentials = {
       email:"user000" + credetialSuffix,
