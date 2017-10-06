@@ -4,7 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "mocha test/controllers",
+    "test": "mocha test/ --recursive",
     "start": "./bin/www"
   },
   "author": "",
