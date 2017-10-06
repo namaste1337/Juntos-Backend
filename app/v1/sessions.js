@@ -46,7 +46,7 @@ module.exports =  function(express, version, passport){
 
     version.use(SIGNUP_ROUTE, passport.authenticate(JSON_SINGUP_STRATEGY_KEY), express.Router().post(EMPTY_PATH, signup));
     version.use(LOGIN_ROUTE, passport.authenticate(JSON_LOGIN_STRATEGY_KEY), express.Router().post(EMPTY_PATH, login));
-    version.use(LOGOUT_ROUTE, express.Router().post(EMPTY_PATH, logout));
+    version.use(LOGOUT_ROUTE, express.Router().get(EMPTY_PATH, logout));
 
 };
 
