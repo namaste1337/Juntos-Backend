@@ -19,7 +19,7 @@
     "express-session": "~1.0.0",
     "jsend": "^1.0.2",
     "method-override": "~1.0.0",
-    "mongoose": "^4.1.12",
+    "mongoose": "^4.10.8",
     "mongoose-auto-increment": "^5.0.1",
     "morgan": "~1.0.0",
     "nodemon": "^1.12.1",
