@@ -9,11 +9,6 @@ var bodyParser   	= require('body-parser');
 var session      	= require('express-session');
 var configDB     	= require('./config/database.js');
 var jsend 			= require('jsend');
-var passwordReset 	= require('password-reset')({
-	uri : "http://localhost:8080/password_reset",
-	from : "support@localhost",
-	host : "localhost", port : 25
-});
 
 // Create Express app instance
 var app      	 	= express();
