@@ -1,6 +1,9 @@
-// Requires 
-var jsend = require('jsend');
-var User  = require('../models/user');
+/////////////////////////
+// Requires
+///////////////////////// 
+
+const jsend = require('jsend');
+const User  = require('../models/user');
 
 
 module.exports =  function(express, version, passport){
