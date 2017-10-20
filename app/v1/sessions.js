@@ -2,8 +2,9 @@
 // Requires
 ///////////////////////// 
 
-const jsend = require('jsend');
-const User  = require('../models/user');
+const jsend         = require("jsend");
+const User          = require("../models/user");
+const errorCodes    = require("../common/errorCodes.js")
 
 
 module.exports =  function(express, version, passport){
@@ -12,12 +13,17 @@ module.exports =  function(express, version, passport){
     // Constants
     /////////////////////////
 
-    const JSON_SINGUP_STRATEGY_KEY = 'json-signup';
-    const JSON_LOGIN_STRATEGY_KEY  = 'json-login';
-    const SIGNUP_ROUTE             = "/signup";
-    const LOGIN_ROUTE              = "/login";
-    const LOGOUT_ROUTE             = "/logout";
-    const EMPTY_PATH               = "";
+    // Keys
+    const JSON_SINGUP_STRATEGY_KEY      = 'json-signup';
+    const JSON_LOGIN_STRATEGY_KEY       = 'json-login';
+    // Paths
+    const SIGNUP_ROUTE                  = "/signup";
+    const LOGIN_ROUTE                   = "/login";
+    const LOGOUT_ROUTE                  = "/logout";
+    const EMPTY_PATH                    = "";
+    //Error Messages
+    const ERROR_INCORRECT_CREDENTIALS   = "Incorrect username or password";
+    const ERROR_USER_NAME_UNAVAILABLE   = "Username is unavailable";
 
     /////////////////////////
     // Request Handlers 
@@ -28,9 +34,9 @@ module.exports =  function(express, version, passport){
         
         passport.authenticate(JSON_LOGIN_STRATEGY_KEY, function(err, user, info){
             if (err) { return next(err); }
-            // If the user name or password ins incorect password return user = false
+            // If the user name or password is incorect password user = false
             if (!user) { 
-                return res.status(401).jsend.fail({message:"Incorrect username or password"});  
+                return res.status(errorCodes.ERROR_CODE_401).jsend.fail({message:ERROR_INCORRECT_CREDENTIALS});  
             }
             //Remove the unneeded fields for the response
             let userCleaned = User.clean(user);
@@ -43,11 +49,10 @@ module.exports =  function(express, version, passport){
     function signup(req, res, next){
     
         passport.authenticate(JSON_SINGUP_STRATEGY_KEY, function(err, user, info){
-             console.log(res.user);
             if (err) { return next(err); }
-            if (!user) { return 
-                res.status(400);
-                res.jsend.fail({message:"Incorrect username or password"}); 
+            // If the username is unavailable user = false
+            if (!user) { 
+                return res.status(errorCodes.ERROR_CODE_401) .jsend.fail({message:ERROR_USER_NAME_UNAVAILABLE}); 
             }
             req.logIn(user, function(err) {
                 if (err) { return next(err); }
@@ -80,9 +85,7 @@ module.exports =  function(express, version, passport){
     /////////////////////////
 
     version.use(SIGNUP_ROUTE, express.Router().post(EMPTY_PATH, signup));
-    // version.use(SIGNUP_ROUTE, passport.authenticate(JSON_SINGUP_STRATEGY_KEY), express.Router().post(EMPTY_PATH, signup));
     version.use(LOGIN_ROUTE, express.Router().post(EMPTY_PATH, login));
-        // version.use(LOGIN_ROUTE, passport.authenticate(JSON_LOGIN_STRATEGY_KEY), express.Router().post(EMPTY_PATH, login));
     version.use(LOGOUT_ROUTE, express.Router().get(EMPTY_PATH, logout));
 
 };
