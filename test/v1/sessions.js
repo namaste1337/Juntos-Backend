@@ -48,12 +48,12 @@ const USER_ID_MULTIPLIER  = 100000;
 
     //Negative Test
 
-    it('Should return 400 status code since no credential are passed', function(done){
+    it('Should return 401 status code since no credential are passed', function(done){
 
       request(app)
         .post(SIGNUP_ENDPOINT)
         .send(emptyCredentialsData)
-        .expect(common.RESPONSE_CODE_400, done);
+        .expect(common.RESPONSE_CODE_401, done);
 
     });
 
@@ -102,12 +102,12 @@ const USER_ID_MULTIPLIER  = 100000;
 
     // Negative Test
 
-    it('Should return 400 status code since no credentials are passed in body', function (done) {
+    it('Should return 401 status code since no credentials are passed in body', function (done) {
 			
 			request(app)
 			  .post(LOGIN_ENDPOINT)        
         .send(emptyCredentialsData)
-			  .expect(common.RESPONSE_CODE_400, done);
+			  .expect(common.RESPONSE_CODE_401, done);
 
 		});
 
