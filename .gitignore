@@ -116,3 +116,11 @@ npm-debug.log
 nbproject
 .idea
 .node_history
+
+################################################
+# Juntos
+#
+# Files to ignore for the juntos project
+################################################
+user_profile_images/*
+!user_profile_images/.gitkeep

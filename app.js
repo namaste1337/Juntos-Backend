@@ -12,22 +12,26 @@ const cookieParser 	= require("cookie-parser");
 const bodyParser   	= require("body-parser");
 const session      	= require("express-session");
 const jsend 		= require("jsend");
+const fileUpload 	= require('express-fileupload');
 
 // Modules
-
 const configDB     	= require("./config/database.js");
 
 /////////////////////////
 // Constants
 ///////////////////////// 
 
-const PASSPORT_CONFIG_PATH 			= "./config/passport";
-const MORGAN_FORMAT		   			= "dev";
-const SESSION_SECRET_KEY   			= "f239hd794298hfd8623b(&F#(HFFHq93rh98wefh23";
+const PASSPORT_CONFIG_PATH 				= "./config/passport";
+const MORGAN_FORMAT		   				= "dev";
+const SESSION_SECRET_KEY   				= "f239hd794298hfd8623b(&F#(HFFHq93rh98wefh23";
 //Routes
-const VERSION_1_PATH				= "/api/v1";
+const VERSION_1_PATH					= "/api/v1";
+//Static Routes
+const USER_PROFILE_IMAGES_PATH 			= "/user_profile_images";
+const USER_PROFILE_IMAGES_VIRTUAL_PATH 	= "user_profile_images"
 //Controllers
-const SESSION_CONTROLLER_FILE_PATH 	=  "./app/v1/sessions.js";
+const SESSION_CONTROLLER_FILE_PATH 		= "./app/v1/sessions.js";
+const UPLOADS_CONTROLLER_FILE_PATH 		= "./app/v1/uploads.js";
 
 /////////////////////////
 // Express Instance 
@@ -53,6 +57,9 @@ app.use(jsend.middleware); //Set up Jsend to standardize responses
 app.use(session({ secret: SESSION_SECRET_KEY })); // session secret
 app.use(passport.initialize()); // Initialize passport
 app.use(passport.session()); // persistent login sessions
+app.use(fileUpload()) // Set up express-fileupload middleware
+// Configure user profile images static path
+app.use(USER_PROFILE_IMAGES_PATH, express.static(USER_PROFILE_IMAGES_VIRTUAL_PATH)) 
 
 /////////////////////////
 // Routing 
@@ -64,6 +71,6 @@ let v1 = express.Router();
 app.use(VERSION_1_PATH, v1);
 // Version 1 API"s
 require(SESSION_CONTROLLER_FILE_PATH)(express, v1, passport); // load our routes and pass in our app and fully configured passport
-
+require(UPLOADS_CONTROLLER_FILE_PATH)(express, v1, passport);
 // Export App as a module
 module.exports = app;
