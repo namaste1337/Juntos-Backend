@@ -13,6 +13,9 @@ var userSchema = mongoose.Schema({
     local            : {
         email        : String,
         password     : String,
+        profile      : {
+            images:  Array
+        },
         time         : { type : Date, default: Date.now },
         last_update  : { type : Date, default: Date.now }
     }
