@@ -34,6 +34,7 @@ const USER_PROFILE_IMAGES_VIRTUAL_PATH 	= "user_profile_images"
 //Controllers
 const SESSION_CONTROLLER_FILE_PATH 		= "./app/v1/sessions.js";
 const UPLOADS_CONTROLLER_FILE_PATH 		= "./app/v1/uploads.js";
+const PROJECTS_CONTROLLER_FILE_PATH     = "./app/v1/projects.js";
 
 /////////////////////////
 // Express Instance 
@@ -80,5 +81,6 @@ app.use(VERSION_1_PATH, v1);
 // Version 1 API"s
 require(SESSION_CONTROLLER_FILE_PATH)(express, v1, passport); // load our routes and pass in our app and fully configured passport
 require(UPLOADS_CONTROLLER_FILE_PATH)(express, v1, passport);
+require(PROJECTS_CONTROLLER_FILE_PATH)(express, v1, passport);
 // Export App as a module
 module.exports = app;
