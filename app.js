@@ -2,15 +2,15 @@
 // Requires
 ///////////////////////// 
 
-const express  		= require("express");
-const mongoose 		= require("mongoose");
-const passport 		= require("passport");
+const express       = require("express");
+const mongoose      = require("mongoose");
+const passport      = require("passport");
 const morgan       	= require("morgan");
 const cookieParser 	= require("cookie-parser");
 const bodyParser   	= require("body-parser");
 const session      	= require("express-session");
-const jsend 		= require("jsend");
-const fileUpload 	= require('express-fileupload');
+const jsend 		    = require("jsend");
+const fileUpload 	  = require('express-fileupload');
 
 /////////////////////////
 // Configs
@@ -24,24 +24,25 @@ const configSession  = require("./config/session.js");
 ///////////////////////// 
 
 // Strings
-const ETAGS_KEY							= "etag";
-const PASSPORT_CONFIG_PATH 				= "./config/passport";
-const MORGAN_FORMAT		   				= "dev";
-//Versioning
-const VERSION_1_PATH					= "/api/v1";
-//Static Routes
-const USER_PROFILE_IMAGES_PATH 			= "/user_profile_images";
+const ETAGS_KEY                         = "etag";
+const MORGAN_FORMAT                     = "dev";
+// Config paths
+const PASSPORT_CONFIG_PATH              = "./config/passport";
+// Versioning
+const VERSION_1_PATH                    = "/api/v1";
+// Static Routes
+const USER_PROFILE_IMAGES_PATH 			    = "/user_profile_images";
 const USER_PROFILE_IMAGES_VIRTUAL_PATH 	= "user_profile_images"
-//Routes
-const SESSION_ROUTE_FILE_PATH 		= "./app/v1/sessions.js";
-const UPLOADS_ROUTE_FILE_PATH 		= "./app/v1/uploads.js";
-const PROJECTS_ROUTE_FILE_PATH     = "./app/v1/projects.js";
+// Routes
+const SESSION_ROUTE_FILE_PATH           = "./app/v1/sessions.js";
+const UPLOADS_ROUTE_FILE_PATH           = "./app/v1/uploads.js";
+const PROJECTS_ROUTE_FILE_PATH          = "./app/v1/projects.js";
 
 /////////////////////////
 // Express Instance 
 ///////////////////////// 
 
-const app      	 	= express();
+const app      	 	                      = express();
 
 /////////////////////////
 // DB Configs
