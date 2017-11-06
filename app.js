@@ -15,7 +15,8 @@ const jsend 		= require("jsend");
 const fileUpload 	= require('express-fileupload');
 
 // Modules
-const configDB     	= require("./config/database.js");
+const configDB     	 = require("./config/database.js");
+const configSession  = require("./config/session.js"); 
 
 /////////////////////////
 // Constants
@@ -54,7 +55,12 @@ app.use(morgan(MORGAN_FORMAT)); // Log every request to the console
 app.use(cookieParser()); // Read cookies (needed for auth)
 app.use(bodyParser.json()); // Get JSON body information
 app.use(jsend.middleware); //Set up Jsend to standardize responses
-app.use(session({ secret: SESSION_SECRET_KEY })); // session secret
+app.use(session({ 
+secret: configSession.SESSION_SECRET_KEY, // session secret
+cookie:{
+	maxAge: configSession.SESSION_COOKIE_MAX_AGE // Cookie expires in 90 days
+}
+})); 
 app.use(passport.initialize()); // Initialize passport
 app.use(passport.session()); // persistent login sessions
 app.use(fileUpload()) // Set up express-fileupload middleware
