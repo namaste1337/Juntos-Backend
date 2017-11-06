@@ -33,9 +33,9 @@ const VERSION_1_PATH					= "/api/v1";
 const USER_PROFILE_IMAGES_PATH 			= "/user_profile_images";
 const USER_PROFILE_IMAGES_VIRTUAL_PATH 	= "user_profile_images"
 //Routes
-const SESSION_CONTROLLER_FILE_PATH 		= "./app/v1/sessions.js";
-const UPLOADS_CONTROLLER_FILE_PATH 		= "./app/v1/uploads.js";
-const PROJECTS_CONTROLLER_FILE_PATH     = "./app/v1/projects.js";
+const SESSION_ROUTE_FILE_PATH 		= "./app/v1/sessions.js";
+const UPLOADS_ROUTE_FILE_PATH 		= "./app/v1/uploads.js";
+const PROJECTS_ROUTE_FILE_PATH     = "./app/v1/projects.js";
 
 /////////////////////////
 // Express Instance 
@@ -85,9 +85,9 @@ let v1 = express.Router();
 // Define version 
 app.use(VERSION_1_PATH, v1);
 // Version 1 API"s - Load our routes and pass in our app and fully configured passport
-require(SESSION_CONTROLLER_FILE_PATH)(express, v1, passport); 
-require(UPLOADS_CONTROLLER_FILE_PATH)(express, v1, passport);
-require(PROJECTS_CONTROLLER_FILE_PATH)(express, v1, passport);
+require(SESSION_ROUTE_FILE_PATH)(express, v1, passport); 
+require(UPLOADS_ROUTE_FILE_PATH)(express, v1, passport);
+require(PROJECTS_ROUTE_FILE_PATH)(express, v1, passport);
 
 // Export App as a module
 module.exports = app;
