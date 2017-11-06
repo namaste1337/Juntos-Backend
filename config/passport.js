@@ -23,6 +23,14 @@ const LOGIN_STRATEGY_KEY   = "json-login";
 module.exports = function(passport) {
 
 
+    ////////////////////////
+    /// Helper Methods
+    ////////////////////////
+
+    // Handles created a user session
+    function createSession(user, req){
+        req.logIn(user,{session: true}, () =>{});
+    }
 
     // =========================================================================
     // passport session setup ==================================================
@@ -35,7 +43,7 @@ module.exports = function(passport) {
         done(null, user.id);
     });
 
-    // used to deserialize the user
+    // // used to deserialize the user
     passport.deserializeUser(function(id, done) {
         User.findById(id, function(err, user) {
             done(err, user);
@@ -85,6 +93,10 @@ module.exports = function(passport) {
                 newUser.save(function(err) {
                     if (err)
                         throw err;
+                        
+                    // Create session
+                    createSession(user, req);
+
                     return done(null, newUser);
                 });
             }
@@ -125,13 +137,14 @@ module.exports = function(passport) {
             if (!user.validPassword(password))
                 return done(null, false); 
 
+            // Create session
+            createSession(user, req);
+
             // all is well, return successful user
             return done(null, user);
         });
 
     }));
-
-
 
 };
 
