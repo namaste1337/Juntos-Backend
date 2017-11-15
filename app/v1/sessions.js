@@ -36,7 +36,7 @@ module.exports =  function(express, version, passport){
             if (err) { return next(err); }
             // If the user name or password is incorect password user = false
             if (!user) { 
-                return res.status(errorCodes.ERROR_CODE_401).jsend.fail({message:ERROR_INCORRECT_CREDENTIALS});  
+                return res.status(errorCodes.ERROR_CODE_409).jsend.fail({message:ERROR_INCORRECT_CREDENTIALS});  
             }
             //Remove the unneeded fields for the response
             let userCleaned = User.clean(user);
@@ -52,7 +52,7 @@ module.exports =  function(express, version, passport){
             if (err) { return next(err); }
             // If the username is unavailable user = false
             if (!user) { 
-                return res.status(errorCodes.ERROR_CODE_401) .jsend.fail({message:ERROR_USER_NAME_UNAVAILABLE}); 
+                return res.status(errorCodes.ERROR_CODE_409) .jsend.fail({message:ERROR_USER_NAME_UNAVAILABLE}); 
             }
             req.logIn(user, function(err) {
                 if (err) { return next(err); }

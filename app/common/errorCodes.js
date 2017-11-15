@@ -3,6 +3,7 @@
 module.exports = {
 
 	ERROR_CODE_401: 401,
+	ERROR_CODE_409: 409,
 	ERROR_CODE_500: 500
 
 }
