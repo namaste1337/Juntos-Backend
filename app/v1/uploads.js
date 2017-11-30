@@ -2,7 +2,6 @@
 // Requires
 ///////////////////////// 
 
-const jsend         = require("jsend");
 const errorCodes    = require("../common/errorCodes.js")
 const fileStorage   = require("../../config/fileStorage.js");
 
