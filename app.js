@@ -37,6 +37,7 @@ const USER_PROFILE_IMAGES_VIRTUAL_PATH 	= "user_profile_images"
 const SESSION_ROUTE_FILE_PATH           = "./app/v1/sessions.js";
 const UPLOADS_ROUTE_FILE_PATH           = "./app/v1/uploads.js";
 const PROJECTS_ROUTE_FILE_PATH          = "./app/v1/projects.js";
+const USERS_ROUTE_FILE_PATH          	= "./app/v1/users.js";
 
 /////////////////////////
 // Express Instance 
@@ -89,6 +90,7 @@ app.use(VERSION_1_PATH, v1);
 require(SESSION_ROUTE_FILE_PATH)(express, v1, passport); 
 require(UPLOADS_ROUTE_FILE_PATH)(express, v1, passport);
 require(PROJECTS_ROUTE_FILE_PATH)(express, v1, passport);
+require(USERS_ROUTE_FILE_PATH)(express, v1, passport)
 
 // Export App as a module
 module.exports = app;
