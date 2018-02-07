@@ -11,6 +11,7 @@ autoIncrement.initialize(mongoose.connection);
 var userSchema = mongoose.Schema({
 
     local            : {
+        username     : String,
         email        : String,
         password     : String,
         profile      : {
