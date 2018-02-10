@@ -19,6 +19,7 @@ module.exports =  function(express, version, passport){
     const EMPTY_PATH                    = "";
     //Error Messages
     const ERROR_INCORRECT_CREDENTIALS   = "Incorrect username or password";
+    const ERROR_SESSION_EXPIRED         = "Session Expired"
 
     /////////////////////////
     // Request Handlers 
@@ -40,6 +41,20 @@ module.exports =  function(express, version, passport){
         })(req, res, next);
     }
 
+    // Handles requests to check if user session is active.
+    // If the session is still active, the method returns
+    // a user object.
+    function ping(req, res){
+
+        let user = req.user;
+        if(user == undefined){
+            return res.status(errorCodes.ERROR_CODE_401).jsend.fail({message:ERROR_SESSION_EXPIRED});  
+        }
+        // Send the user object in the response
+       res.jsend.success(user);
+
+    }
+
     // Handles logout request
     function logout(req, res){
         req.logout();
@@ -52,6 +67,7 @@ module.exports =  function(express, version, passport){
     /////////////////////////
 
     version.use(SESSION_ROUTE, express.Router().post(EMPTY_PATH, login));
+    version.use(SESSION_ROUTE, express.Router().get(EMPTY_PATH, ping));
     version.use(SESSION_ROUTE, express.Router().delete(EMPTY_PATH, logout));
 
 };
