@@ -17,7 +17,6 @@
     "ejs": "~0.8.5",
     "express": "^4.15.4",
     "express-fileupload": "^0.3.0",
-    "express-jsonschema": "^1.1.6",
     "express-session": "~1.0.0",
     "jsend": "^1.0.2",
     "method-override": "~1.0.0",
