@@ -6,23 +6,11 @@
 // app/models/user.js
 // load the things we need
 var mongoose = require('mongoose'),
-    autoIncrement = require('mongoose-auto-increment'),
-    bcrypt   = require('bcrypt-nodejs'),
-    user     = require('user'),
+    Schema = mongoose.Schema,
+    autoIncrement = require('mongoose-auto-increment');
 
 // Initialize mongoose-auto-increment 
 autoIncrement.initialize(mongoose.connection);
-
-
-/////////////////////////
-// Constants
-/////////////////////////
-
-// Objects
-const NULL_OBJECT = null;
-// Strings
-const EMPTY_STRING = "";
-
 
 /////////////////////////
 // Schema
@@ -39,7 +27,7 @@ var projectSchema = mongoose.Schema({
     current_status      : String,
     type                : String,
     food_provided       : String,
-    images              : [String]
+    images              : Schema.Types.Mixed,
     location            : Schema.Types.Mixed,
     time                : { type : Date, default: Date.now },
     last_update         : { type : Date, default: Date.now }
@@ -55,28 +43,42 @@ var projectSchema = mongoose.Schema({
 // Takes a mongoose project entity as a parameter
 projectSchema.statics.clean = function(projectEntity){
 
-    // TODO: The following is a place holder.
-    // var obj = projectEntity.toObject();
-    // delete obj.local.password;
-    // delete obj._id;
-    // delete obj.__v;
+    var obj = projectEntity.toObject();
+    delete obj.local.password;
+    delete obj._id;
+    delete obj.__v;
 
-    // return obj;
+    return obj;
+
 }
 
 /////////////////////////
-// Instance method
+// Instance methods
 /////////////////////////
 
-projectSchema.newProject(projectObject){
+projectSchema.methods.createProject = function(projectObject){
  
-    let errorProjectParams = this_validateProjectParms(projectObject)
-    // If any project values are missing or incorrect return them
-    // to controller.
-    if(errorProjectParams.length > 0)
-        return errorProjectParams;
+ return new Promise((resolve, reject) => {
 
+    this.user           = projectObject.user;
+    this.name           = projectObject.name;
+    this.description    = projectObject.description;
+    this.start_date     = projectObject.start_date;
+    this.end_date       = projectObject.end_start;
+    this.current_status = projectObject.current_status;
+    this.type           = projectObject.type;
+    this.food_provided  = projectObject.food_provided;
+    this.images         = projectObject.images;
+    this.location       = projectObject.location;
 
+    this.save((error) => {
+        if(error)
+            reject(error);
+        // Return the saved project object
+        resolve(this);
+    });
+
+ });
 
 }
 
