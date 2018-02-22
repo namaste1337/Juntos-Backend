@@ -5,7 +5,6 @@
 const errorCodes    = require("../common/errorCodes.js")
 const fileStorage   = require("../../config/fileStorage.js");
 
-
 module.exports =  function(express, version, passport){
 
   /////////////////////////
@@ -16,7 +15,8 @@ module.exports =  function(express, version, passport){
   const IMAGE_UPLOAD_ROUTE  = "/image_upload";
   const EMPTY_PATH          = "";
   //Error Messages
-  const IMAGE_FAILED_MOVE_ERROR = "Internal Error: Failed to move images"
+  const IMAGE_FAILED_MOVE_ERROR = "Internal Error: Failed to move images";
+  const IMAGE_FAILED_UPLOAD     = 'No files were uploaded';
 
   /////////////////////////
   // Helper functions 
@@ -56,6 +56,9 @@ module.exports =  function(express, version, passport){
   // Handles image upload request, on success response 
   // sends an array with image names
   function imageUpload(req, res, next){
+
+  if (!req.files)
+    return res.status(errorCodes.ERROR_CODE_400).jsend.fail({message: IMAGE_FAILED_UPLOAD});
 
 	 moveImages(req.files, fileStorage.images)
    .then(function(imageNamesArray){
