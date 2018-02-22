@@ -34,7 +34,7 @@ module.exports =  function(express, version, passport){
        let currentFile = files[key];
        currentFile.mv(path + currentFile.name, function(err){
          if(err)
-           reject(Error(IMAGE_FAILED_MOVE_ERROR));
+           reject(IMAGE_FAILED_MOVE_ERROR);
        });
        fileNamesArray[fileNamesArray.length] = currentFile.name;
      });
@@ -59,7 +59,7 @@ module.exports =  function(express, version, passport){
     res.jsend.success(imageNamesArray);
    }).catch(function(err){
     console.log(err);
-    res.status(errorCodes.ERROR_CODE_500).jsend.fail(IMAGE_FAILED_MOVE_ERROR);
+    res.status(errorCodes.ERROR_CODE_500).jsend.fail(err);
    })  
 
   }
