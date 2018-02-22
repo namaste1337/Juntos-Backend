@@ -1,5 +1,8 @@
+// This file will host directories
+// for different types of media
+
 module.exports = {
 
-    'userProfileImagePath' : __dirname + "/../user_profile_images/"
+  images: __dirname + "/../public/images",
 
 };
