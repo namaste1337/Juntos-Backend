@@ -3,6 +3,6 @@
 
 module.exports = {
 
-  images: __dirname + "/../public/images",
+  images: __dirname + "/../public/images/",
 
 };
