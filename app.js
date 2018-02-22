@@ -75,7 +75,7 @@ app.disable(ETAGS_KEY); // Disabled etags
 // Static Paths 
 ///////////////////////// 
 
-// Configure user profile images static path
+// Configure public static path
 app.use(PUBLIC_PATH, express.static(PUBLIC_VIRTUAL_PATH)) 
 
 /////////////////////////
