@@ -31,8 +31,8 @@ const PASSPORT_CONFIG_PATH              = "./config/passport";
 // Versioning
 const VERSION_1_PATH                    = "/api/v1";
 // Static Routes
-const USER_PROFILE_IMAGES_PATH 			    = "/user_profile_images";
-const USER_PROFILE_IMAGES_VIRTUAL_PATH 	= "user_profile_images"
+const PUBLIC_PATH 						= "/public";
+const PUBLIC_VIRTUAL_PATH 				= "public"
 // Routes
 const SESSION_ROUTE_FILE_PATH           = "./app/v1/sessions.js";
 const UPLOADS_ROUTE_FILE_PATH           = "./app/v1/uploads.js";
@@ -76,7 +76,7 @@ app.disable(ETAGS_KEY); // Disabled etags
 ///////////////////////// 
 
 // Configure user profile images static path
-app.use(USER_PROFILE_IMAGES_PATH, express.static(USER_PROFILE_IMAGES_VIRTUAL_PATH)) 
+app.use(PUBLIC_PATH, express.static(PUBLIC_VIRTUAL_PATH)) 
 
 /////////////////////////
 // Routing 
