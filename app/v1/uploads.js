@@ -22,6 +22,16 @@ module.exports =  function(express, version, passport){
   // Helper functions 
   /////////////////////////
 
+ // Helper function: Reduces repition for single and multiple
+ // fiel uploads
+  function moveFile(file, path){
+    let currentFile = file;
+     currentFile.mv(path + currentFile.name, function(err){
+       if(err)
+         return err;
+     });
+  }
+
   // Helper function:  Moves image to supplied path
   // Promise return an array of file names if resolved.
   function moveImages(files, path){
@@ -29,15 +39,23 @@ module.exports =  function(express, version, passport){
    let fileNamesArray = [];
 
    return new Promise(function(resolve, reject){
-    // Loop threw all the images and move them to the path
-     Object.keys(files).map((key, index) => {
-       let currentFile = files[key];
-       currentFile.mv(path + currentFile.name, function(err){
-         if(err)
-           reject(IMAGE_FAILED_MOVE_ERROR);
-       });
+     // Check if if single file or array
+     if(files.image.length == null){
+      let currentFile = files.image;
+      let err = moveFile(currentFile, path);
+      if(err)
+       reject(err);
+      fileNamesArray[fileNamesArray.length] = currentFile.name;
+     }else{
+      files.image.map((object) => {
+       let currentFile = object;
+       console.log(currentFile);
+       let err = moveFile(currentFile, path);
+       if(err)
+        reject(err);
        fileNamesArray[fileNamesArray.length] = currentFile.name;
-     });
+      });
+     }
      resolve(fileNamesArray);  
    })
 
