@@ -2,31 +2,45 @@
 // Requires
 ///////////////////////// 
 
-let authenticate = require("./../common/authentication")
-
-
+let Project             = require("./../models/projects");
+let authenticate        = require("./../common/authentication")
+ 
 module.exports =  function(express, version, passport){
 
   // Route
-  const PROJECT_ROUTE = "/project";
+  const PROJECT_ROUTE = "/projects";
 
-	function createProjects(req, res){
+	function createProject(req, res){
+
+    let project = new Project();
+    let projectObject = req.body;
+
+    // Add the currently logged in user as the creator
+    projectObject.user = req.user;
+
+    project.createProject(req.body).then(project => {
+      res.jsend.success(project);
+    }).catch(err => {
+      res.jsend.failure(error);
+    });
 
 	} 
 
-	function getProjects(req, res){
-    res.status(200).jsend.success("ok")
+	function getProject(req, res){
+
+
+
 	} 
 
-  function updateProjects(req, res){
+  function updateProject(req, res){
 
   }
 
-  function deleteProjects(req, res){
+  function deleteProject(req, res){
 
 
   }
 
-  version.use(PROJECT_ROUTE, authenticate.isLoggedIn, express.Router().get("", getProjects))
+  version.use(PROJECT_ROUTE, express.Router().post("",createProject))
 
 }
