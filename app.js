@@ -31,7 +31,6 @@ const PASSPORT_CONFIG_PATH              = "./config/passport";
 // Versioning
 const VERSION_1_PATH                    = "/api/v1";
 // Static Routes
-const PUBLIC_PATH 						= "/public";
 const PUBLIC_VIRTUAL_PATH 				= "public"
 // Routes
 const SESSION_ROUTE_FILE_PATH           = "./app/v1/sessions.js";
@@ -76,7 +75,7 @@ app.disable(ETAGS_KEY); // Disabled etags
 ///////////////////////// 
 
 // Configure public static path
-app.use(PUBLIC_PATH, express.static(PUBLIC_VIRTUAL_PATH)) 
+app.use(express.static(PUBLIC_VIRTUAL_PATH)) 
 
 /////////////////////////
 // Routing 
