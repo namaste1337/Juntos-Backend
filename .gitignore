@@ -122,5 +122,8 @@ nbproject
 #
 # Files to ignore for the juntos project
 ################################################
-user_profile_images/*
-!user_profile_images/.gitkeep
+public/images/*
+!public/.gitkeep
+!public/images/.gitkeep
+
+
