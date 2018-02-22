@@ -22,12 +22,6 @@ module.exports =  function(express, version, passport){
   // Helper functions 
   /////////////////////////
 
-  function determineStorageRoute(imageType){
-
-
-
-  }
-
   // Helper function:  Moves image to supplied path
   // Promise return an array of file names if resolved.
   function moveImages(files, path){
