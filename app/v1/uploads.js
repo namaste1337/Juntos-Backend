@@ -22,6 +22,12 @@ module.exports =  function(express, version, passport){
   // Helper functions 
   /////////////////////////
 
+  function determineStorageRoute(imageType){
+
+
+
+  }
+
   // Helper function:  Moves image to supplied path
   // Promise return an array of file names if resolved.
   function moveImages(files, path){
@@ -51,7 +57,7 @@ module.exports =  function(express, version, passport){
   // sends an array with image names
   function imageUpload(req, res, next){
 
-	 moveImages(req.files, fileStorage.userProfileImagePath)
+	 moveImages(req.files, fileStorage.images)
    .then(function(imageNamesArray){
     res.jsend.success(imageNamesArray);
    }).catch(function(err){
