@@ -49,7 +49,6 @@ module.exports =  function(express, version, passport){
      }else{
       files.image.map((object) => {
        let currentFile = object;
-       console.log(currentFile);
        let err = moveFile(currentFile, path);
        if(err)
         reject(err);
