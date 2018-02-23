@@ -44,7 +44,6 @@ var projectSchema = mongoose.Schema({
 projectSchema.statics.clean = function(projectEntity){
 
     var obj = projectEntity.toObject();
-    delete obj.local.password;
     delete obj._id;
     delete obj.__v;
 
