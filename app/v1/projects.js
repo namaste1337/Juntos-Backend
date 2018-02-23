@@ -2,7 +2,8 @@
 // Requires
 ///////////////////////// 
 
-let Project             = require("./../models/projects");
+let userModel                = require("./../models/user");
+let projectModel             = require("./../models/projects");
 let authenticate        = require("./../common/authentication")
  
 module.exports =  function(express, version, passport){
@@ -12,14 +13,16 @@ module.exports =  function(express, version, passport){
 
 	function createProject(req, res){
 
-    let project = new Project();
+    let project = new projectModel();
     let projectObject = req.body;
 
     // Add the currently logged in user as the creator
-    projectObject.user = req.user;
+    // Run user through the clean function to remove
+    // and sensitive data.
+    projectObject.user = userModel.clean(req.user);
 
-    project.createProject(req.body).then(project => {
-      res.jsend.success(project);
+    project.createProject(projectObject).then(project => {
+      res.jsend.success(projectModel.clean(project));
     }).catch(err => {
       res.jsend.failure(error);
     });
