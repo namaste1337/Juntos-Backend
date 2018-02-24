@@ -51,10 +51,32 @@ projectSchema.statics.clean = function(projectEntity){
 
 }
 
+// Handles retrieving projects by id
+projectSchema.statics.getProjectsById = function(id){
+
+   return new Promise((resolve, reject) => {
+        if(id !== null){
+            reject("Error: Missing id parameter");
+        }
+
+        let query = {"project_id": id};
+
+        projectModel.find(query, (error, projects) => {
+            if(error)
+                reject(error);
+            reoslve(projects);
+        });
+
+    })
+
+}
+
+
 /////////////////////////
 // Instance methods
 /////////////////////////
 
+// Handles creating a new project
 projectSchema.methods.createProject = function(projectObject){
  
  return new Promise((resolve, reject) => {
