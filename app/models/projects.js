@@ -61,7 +61,7 @@ projectSchema.statics.getProjectsById = function(id){
 
         let query = {"project_id": id};
 
-        projectModel.find(query, (error, projects) => {
+        this.find(query, (error, projects) => {
             if(error)
                 reject(error);
             reoslve(projects);
