@@ -51,23 +51,51 @@ projectSchema.statics.clean = function(projectEntity){
 
 }
 
-// Handles retrieving projects by id
-projectSchema.statics.getProjectsById = function(id){
+projectSchema.statics.getProjectsQuery = function(query){
 
-   return new Promise((resolve, reject) => {
-        if(id !== null){
-            reject("Error: Missing id parameter");
-        }
-
-        let query = {"project_id": id};
-
+    return new Promise((resolve, reject) => {
         this.find(query, (error, projects) => {
             if(error)
                 reject(error);
-            reoslve(projects);
+            resolve(projects);
         });
+    });      
 
-    })
+}
+
+//Retrieves projects by max distance
+projectSchema.statics.getProjectByMaxDistance = function(lat, lng, maxMeters){
+
+    // Validate parameters
+    if(maxMeters == null){
+        reject("Error: Missing meters parameter");
+    }
+
+    let query = {"location.coordinates":{
+        $near: {
+            $geometry: {
+              type: "Point" ,
+              coordinates: [ lng , lat ]
+            },
+            $maxDistance: maxMeters,
+        }
+    }}
+
+    return this.getProjectsQuery(query);
+
+}
+
+// Handles retrieving projects by id
+projectSchema.statics.getProjectsById = function(id){
+
+    // Validate parameters
+    if(id == null){
+        reject("Error: Missing id parameter");
+    }
+
+    let query = {"project_id": id};
+
+    return this.getProjectsQuery(query);
 
 }
 
