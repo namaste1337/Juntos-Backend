@@ -51,7 +51,7 @@ module.exports =  function(express, version, passport){
             return res.status(errorCodes.ERROR_CODE_401).jsend.fail({message:ERROR_SESSION_EXPIRED});  
         }
         // Send the user object in the response
-       res.jsend.success(user);
+       res.jsend.success(User.clean(user));
 
     }
 
