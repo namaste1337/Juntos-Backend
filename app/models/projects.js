@@ -158,7 +158,7 @@ projectSchema.methods.createProject = function(projectObject){
         // Return the saved project object
         resolve(this);
     }).catch(error =>{
-        console.log(error);
+        console.error(error);
     });
 
  });
