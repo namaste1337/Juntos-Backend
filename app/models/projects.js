@@ -141,6 +141,8 @@ projectSchema.methods.createProject = function(projectObject){
     this.type           = projectObject.type;
     this.food_provided  = projectObject.food_provided;
     this.images         = projectObject.images;
+    // Location object the 2dsphere implements
+    // geo spatial indexing structure requirements
     this.location       = {
         loc:{
             type: LOCATION_TYPE_POINT_STRING, 
