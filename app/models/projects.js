@@ -3,20 +3,34 @@
 // Modules
 /////////////////////////
 
-// app/models/user.js
-// load the things we need
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema,
     autoIncrement = require('mongoose-auto-increment');
+
+/////////////////////////
+// Initializations
+/////////////////////////
 
 // Initialize mongoose-auto-increment 
 autoIncrement.initialize(mongoose.connection);
 
 /////////////////////////
+// Constants
+/////////////////////////
+
+//Strings
+const LOCATION_TYPE_POINT_STRING              = "Point";
+//Errors
+const MISSING_LAT_PARAMETER_ERROR_STRING      = "Error: Missing lat parameter";
+const MISSING_LNG_PARAMETER_ERROR_STRING      = "Error: Missing lng parameter";
+const MISSING_RADIUS_PARAMETER_ERROR_STRING   = "Error: Missing radius parameter";
+const MISSING_ID_PARAMETER_ERROR_STRING       = "Error: Missing id parameter";
+
+/////////////////////////
 // Schema
 /////////////////////////
 
-// define the schema for our user model
+// Defines the schema for our project collection
 var projectSchema = mongoose.Schema({
 
     user                : Schema.Types.Mixed,
@@ -28,18 +42,25 @@ var projectSchema = mongoose.Schema({
     type                : String,
     food_provided       : String,
     images              : Schema.Types.Mixed,
-    location            : Schema.Types.Mixed,
+    location            : {type: Schema.Types.Mixed, loc: {type: {type: String}, coordinates:[Number]}, address: String},
     time                : { type : Date, default: Date.now },
     last_update         : { type : Date, default: Date.now }
-    
 
 });
+
+/////////////////////////
+// Indexes
+/////////////////////////
+
+// We create an index for the location of a project, 
+// this will allow for faster geo spatile queries
+projectSchema.index({ "location.loc": '2dsphere' });
 
 /////////////////////////
 // Static methods
 /////////////////////////
 
-// Removes fields not required for the reponse
+// Removes unneeded fields for the reponse
 // Takes a mongoose project entity as a parameter
 projectSchema.statics.clean = function(projectEntity){
 
@@ -51,54 +72,56 @@ projectSchema.statics.clean = function(projectEntity){
 
 }
 
-projectSchema.statics.getProjectsQuery = function(query){
+/////////////////////////
+// Query Helpers
+/////////////////////////
 
-    return new Promise((resolve, reject) => {
-        this.find(query, (error, projects) => {
-            if(error)
-                reject(error);
-            resolve(projects);
-        });
-    });      
-
-}
-
-//Retrieves projects by max distance
-projectSchema.statics.getProjectByMaxDistance = function(lat, lng, maxMeters){
+// Retrieves projects by max distance relative 
+// to longitude and latitude
+projectSchema.query.byDistance = function(lat, lng, radius){
 
     // Validate parameters
-    if(maxMeters == null){
-        reject("Error: Missing meters parameter");
+    if(lat == null){
+        console.error(MISSING_LAT_PARAMETER_ERROR_STRING);
+        return;
     }
-
-    let query = {"location.coordinates":{
+    if(lng == null){
+        console.error(MISSING_LNG_PARAMETER_ERROR_STRING);
+        return;
+    }
+    if(radius == null){
+        console.error(MISSING_RADIUS_PARAMETER_ERROR_STRING);
+        return;
+    }
+    console.log(arguments)
+    let query = {"location.loc":{
         $near: {
             $geometry: {
               type: "Point" ,
               coordinates: [ lng , lat ]
             },
-            $maxDistance: maxMeters,
+            $maxDistance: radius,
         }
     }}
 
-    return this.getProjectsQuery(query);
+    return this.find(query);
 
 }
 
-// Handles retrieving projects by id
-projectSchema.statics.getProjectsById = function(id){
+// Retrieves a project by ID
+projectSchema.query.byId = function(id){
 
     // Validate parameters
     if(id == null){
-        reject("Error: Missing id parameter");
+        console.error(MISSING_ID_PARAMETER_ERROR_STRING);
+        return;
     }
 
     let query = {"project_id": id};
 
-    return this.getProjectsQuery(query);
+    return this.find(query);
 
 }
-
 
 /////////////////////////
 // Instance methods
@@ -118,13 +141,22 @@ projectSchema.methods.createProject = function(projectObject){
     this.type           = projectObject.type;
     this.food_provided  = projectObject.food_provided;
     this.images         = projectObject.images;
-    this.location       = projectObject.location;
+    this.location       = {
+        loc:{
+            type: LOCATION_TYPE_POINT_STRING, 
+            coordinates:[
+                projectObject.location.coordinates.lng,
+                projectObject.location.coordinates.lat
+            ], 
+        },
+        address: projectObject.location.address
+    };
 
-    this.save((error) => {
-        if(error)
-            reject(error);
+    this.save((project) => {
         // Return the saved project object
         resolve(this);
+    }).catch(error =>{
+        console.log(error);
     });
 
  });
@@ -132,14 +164,14 @@ projectSchema.methods.createProject = function(projectObject){
 }
 
 
-//Add mongoose-auto-increment as a plugin to the users schema
-//the plugin adds an user_id(Number) field and will autoincrement 
-//when creating a user entity.
+//Add mongoose-auto-increment as a plugin to the project schema
+//the plugin adds an project_id(Number) field and will autoincrement 
+//when creating a project entity.
 projectSchema.plugin(autoIncrement.plugin, {
     model: 'Projects',
     field: 'project_id',
     startAt: 1000
 });
 
-// create the model for users and expose it to our app
+// Create the model for project and expose it to our app
 module.exports = mongoose.model('Projects', projectSchema);
