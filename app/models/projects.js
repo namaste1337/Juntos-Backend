@@ -93,7 +93,7 @@ projectSchema.query.byDistance = function(lat, lng, radius){
         console.error(MISSING_RADIUS_PARAMETER_ERROR_STRING);
         return;
     }
-    console.log(arguments)
+
     let query = {"location.loc":{
         $near: {
             $geometry: {
