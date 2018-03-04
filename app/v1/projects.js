@@ -113,7 +113,7 @@ module.exports =  function(express, version, passport){
       return res.jsend.fail(PROJECT_BY_DISTANCE_ERROR);
 
     projectModel.find().byDistance(parseFloat(lat), parseFloat(lng), parseInt(radius)).then(projects =>{
-      return res.status(errorCodes.ERROR_CODE_400).qjsend.success(projects);
+      return res.jsend.success(projects);
     }).catch(error => {
       console.log(error);
     });
