@@ -78,7 +78,7 @@ projectSchema.statics.clean = function(projectEntity){
 
 // Retrieves projects by max distance relative 
 // to longitude and latitude
-projectSchema.query.byDistance = function(lat, lng, radius){
+projectSchema.query.byDistance = function(lat, lng, radius, limit){
 
     // Validate parameters
     if(lat == null){
@@ -104,7 +104,7 @@ projectSchema.query.byDistance = function(lat, lng, radius){
         }
     }}
 
-    return this.find(query);
+    return this.find(query).limit(limit);
 
 }
 

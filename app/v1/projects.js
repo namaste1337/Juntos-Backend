@@ -106,13 +106,14 @@ module.exports =  function(express, version, passport){
     let lat     = req.query.lat;
     let lng     = req.query.lng;
     let radius  = req.query.radius;
+    let limit   = req.query.limit
 
     // TODO: Validations should be handled by
     // express-jason-validator-middleware 
     if(lat == null || lng == null || radius == null)
       return res.jsend.fail(PROJECT_BY_DISTANCE_ERROR);
 
-    projectModel.find().byDistance(parseFloat(lat), parseFloat(lng), parseInt(radius)).then(projects =>{
+    projectModel.find().byDistance(parseFloat(lat), parseFloat(lng), parseInt(radius), parseInt(limit)).then(projects =>{
       return res.jsend.success(projects);
     }).catch(error => {
       console.log(error);
