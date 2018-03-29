@@ -41,9 +41,9 @@ module.exports =  function(express, version, passport){
     let project = new projectModel();
     let projectObject = req.body;
 
-    // Add the currently logged in user as the creator
-    // Run user through the clean function to remove
-    // and sensitive data.
+    // Add the request user as the creator of the project
+    // and run the user through the clean function to remove
+    // any sensitive data.
     projectObject.user = userModel.clean(req.user);
 
     project.createProject(projectObject).then(project => {
@@ -54,9 +54,9 @@ module.exports =  function(express, version, passport){
 
 	} 
 
-  //Serves as the entry point for the /projects route
+  // Serves as the entry point for the /projects route
   // But will delegate to different methods depending 
-  // on the query parameters
+  // on the query parameters.
   function getProjects(req, res){
 
     let geoFilter = req.query.geo;
@@ -70,7 +70,7 @@ module.exports =  function(express, version, passport){
 
   }
 
-  // Returns all projects ordered by newest
+  // Returns all projects ordered by newest.
   function getAllProjects(req, res){
 
     projectModel.find({}).then(projects => {
@@ -81,7 +81,7 @@ module.exports =  function(express, version, passport){
 
   }
 
-  // Returns the project spcified by project_id
+  // Returns a single project by ID.
   function getProjectById(req, res){
 
     let id = req.params.id;
@@ -100,7 +100,7 @@ module.exports =  function(express, version, passport){
   }
 
   // Returns projects by radial distance relative to the 
-  // longitude and latitude
+  // longitude and latitude parameters.
 	function getProjectsByDistance(req, res){
 
     let lat     = req.query.lat;
