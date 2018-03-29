@@ -30,11 +30,13 @@ module.exports =  function(express, version, passport){
         
         passport.authenticate(JSON_LOGIN_STRATEGY_KEY, function(err, user, info){
             if (err) { return next(err); }
-            // If the user name or password is incorect password user = false
+            // If the user name does not exist or the password is wrong, the user parameter
+            // will be returned as false.
             if (!user) { 
                 return res.status(errorCodes.ERROR_CODE_409).jsend.fail({message:ERROR_INCORRECT_CREDENTIALS});  
             }
-            //Remove the unneeded fields for the response
+
+            //Before returning a response, remove all sensitive user data.
             let userCleaned = User.clean(user);
             res.jsend.success({user: userCleaned}) 
 
@@ -42,7 +44,7 @@ module.exports =  function(express, version, passport){
     }
 
     // Handles requests to check if user session is active.
-    // If the session is still active, the method returns
+    // If the session is still active, the response return 
     // a user object.
     function ping(req, res){
 
@@ -50,12 +52,13 @@ module.exports =  function(express, version, passport){
         if(user == undefined){
             return res.status(errorCodes.ERROR_CODE_401).jsend.fail({message:ERROR_SESSION_EXPIRED});  
         }
-        // Send the user object in the response
+        // Cleans the user object of any sensitive data 
+        // and returns the reponse.
        res.jsend.success(User.clean(user));
 
     }
 
-    // Handles logout request
+    // Handles logout request.
     function logout(req, res){
         req.logout();
         res.jsend.success({unauthenticated: true})
