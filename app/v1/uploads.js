@@ -22,8 +22,9 @@ module.exports =  function(express, version, passport){
   // Helper functions 
   /////////////////////////
 
- // Helper function: Reduces repition for single and multiple
- // fiel uploads
+ // - Helper function - 
+ // Reduces repetition for single and multiple
+ // file uploads.
   function moveFile(file, path){
     let currentFile = file;
      currentFile.mv(path + currentFile.name, function(err){
@@ -32,14 +33,15 @@ module.exports =  function(express, version, passport){
      });
   }
 
-  // Helper function:  Moves image to supplied path
-  // Promise return an array of file names if resolved.
+  // - Helper function -
+  // Moves a single image or an array of images to supplied path.
+  // Promise returns an array of file names if resolved.
   function moveImages(files, path){
 
    let fileNamesArray = [];
 
    return new Promise(function(resolve, reject){
-     // Check if if single file or array
+     // Check if if single file or array.
      if(files.image.length == null){
       let currentFile = files.image;
       let err = moveFile(currentFile, path);
@@ -64,8 +66,8 @@ module.exports =  function(express, version, passport){
   // Request Handlers 
   /////////////////////////
 
-  // Handles image upload request, on success response 
-  // sends an array with image names
+  // Handles image upload request, on success the response 
+  // return an array of image names.
   function imageUpload(req, res, next){
 
   if (!req.files)
