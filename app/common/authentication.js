@@ -4,10 +4,13 @@
 
 let errorCodes = require("./errorCodes");
 
+/////////////////////////
+// Module
+///////////////////////// 
 
 module.exports = {
 
-	// Route middleware to make sure the calling user is logged in.
+	// Route middleware to make sure the calling client is logged in.
 	isLoggedIn: function (req, res, next) {
 
     	// If user is authenticated in the session, carry on.
