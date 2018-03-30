@@ -1,5 +1,10 @@
 // This file will host error codes that will
-// shares accross files.
+// be shared accross files.
+
+/////////////////////////
+// Module
+///////////////////////// 
+
 module.exports = {
 
 	ERROR_CODE_400: 400,
