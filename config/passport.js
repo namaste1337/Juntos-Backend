@@ -1,10 +1,11 @@
-// config/passport.js
+// This file configures passport authentication
+// middlware
 
-// load all the things we need
-// var LocalStrategy   = require('passport-local').Strategy;
-var JsonStrategy = require('passport-json').Strategy;
+///////////////////////////
+// Requires
+//////////////////////////
 
-// load up the user model
+var JsonStrategy    = require('passport-json').Strategy;
 var User            = require('../app/models/user');
 
 ///////////////////////////
@@ -19,7 +20,10 @@ const PASSWORD_PROP_TYPE   = "password";
 const SIGNUP_STRATEGY_KEY  = "json-signup";
 const LOGIN_STRATEGY_KEY   = "json-login";
 
-// expose this function to our app using module.exports
+///////////////////////////
+// Module
+//////////////////////////
+
 module.exports = function(passport) {
 
 
@@ -32,64 +36,73 @@ module.exports = function(passport) {
         req.logIn(user,{session: true}, () =>{});
     }
 
-    // =========================================================================
-    // passport session setup ==================================================
-    // =========================================================================
-    // required for persistent login sessions
-    // passport needs ability to serialize and unserialize users out of session
+    ///////////////////////////
+    // Passport session setup
+    ///////////////////////////
 
-    // used to serialize the user for the session
+    // Required for persistent login sessions.
+    // Passport needs ability to serialize and 
+    // unserialize users out of session.
+
+    // Used to serialize the user for the session.
     passport.serializeUser(function(user, done) {
         done(null, user.id);
     });
 
-    // // used to deserialize the user
+    // Used to deserialize the user.
     passport.deserializeUser(function(id, done) {
         User.findById(id, function(err, user) {
             done(err, user);
         });
     });
 
-    // =========================================================================
-    // JSON SIGNUP ============================================================
-    // =========================================================================
-    // we are using named strategies since we have one for login and one for signup
-    // by default, if there was no name, it would just be called 'local'
+    ///////////////////////////
+    // JSON Signup
+    ///////////////////////////
+
+    // We are using named strategies since we 
+    // have one for login and one for signup
+    // by default, if there was no name, 
+    // it would just be called 'local'.
 
     passport.use( SIGNUP_STRATEGY_KEY, new JsonStrategy({
-        // by default, local strategy uses username and password, we will override with email
+
+        // By default, local strategy uses username and 
+        // password, we will override with email.
+
         usernameProp : USERNAME_PROP_TYPE,
         passwordProp : PASSWORD_PROP_TYPE,
-        passReqToCallback : true // allows us to pass back the entire request to the callback
+        passReqToCallback : true // Allows us to pass back the entire request to the callback.
     },
     function(req, email, password, done) {
 
-        // asynchronous
-        // User.findOne wont fire unless data is sent back
+        // Asynchronous
+        // User.findOne wont fire unless data is sent back.
         process.nextTick(function() {
 
-        // find a user whose email is the same as the forms email
-        // we are checking to see if the user trying to login already exists
+        // Find a user whose email is the same as the forms email
+        // we are checking to see if the user trying to signup already exists.
         User.findOne({ "local.email" :  email }, function(err, user) {
-            // if there are any errors, return the error
+
+            // If there are any errors, return the error.
             if (err)
                 return done(err);
 
-            // check to see if theres already a user with that email
+            // Check to see if theres already a user with that email.
             if (user) {
                 return done(null, false);
             } else {
 
-                // if there is no user with that email
-                // create the user
+                // If there is no user with that email
+                // create the user.
                 var newUser            = new User();
-                // set the user's local credentials
+                // Set the user's local credentials.
                 newUser.local.email          = email;
                 newUser.local.password       = newUser.generateHash(password);
-                // Set profile image
+                // Set profile image.
                 newUser.local.profile.images = [req.body.profileImageName];
 
-                // save the user
+                // Save the user
                 newUser.save(function(err) {
                     if (err)
                         throw err;
@@ -107,40 +120,47 @@ module.exports = function(passport) {
 
     }));
 
-     // =========================================================================
-    // JSON LOGIN =============================================================
-    // =========================================================================
-    // we are using named strategies since we have one for login and one for signup
-    // by default, if there was no name, it would just be called 'local'
+    ///////////////////////////
+    // JSON Login
+    ///////////////////////////
+
+    // We are using named strategies since we 
+    // have one for login and one for signup
+    // by default, if there was no name, it 
+    // would just be called 'local'.
 
     passport.use(LOGIN_STRATEGY_KEY, new JsonStrategy({
-        // by default, local strategy uses username and password, we will override with email
+
+        // By default, local strategy uses username 
+        // and password, we will override with email.
+        
         usernameProp : USERNAME_PROP_TYPE,
         passwordProp : PASSWORD_PROP_TYPE,
-        passReqToCallback : true // allows us to pass back the entire request to the callback
+        passReqToCallback : true // Allows us to pass back the entire request to the callback
     },
-    function(req, email, password, done) { // callback with email and password from our form
-        // find a user whose email is the same as the forms email
+    function(req, email, password, done) { 
+
+        // Find a user whose email is the same as the forms email
         // we are checking to see if the user trying to login already exists
 
         User.findOne({ "local.email" :  email }, function(err, user) {
    
-            // if there are any errors, return the error before anything else
+            // If there are any errors, return the error before anything else
             if (err)
                 return done(err);
 
-            // if no user is found, return user = false
+            // If no user is found, return user = false
             if (!user)
                 return done(null, false); 
 
-            // // if the user is found but the password is wrong return user = false
+            // If the user is found but the password is wrong return user = false
             if (!user.validPassword(password))
                 return done(null, false); 
 
             // Create session
             createSession(user, req);
 
-            // all is well, return successful user
+            // All is well, return successful user.
             return done(null, user);
         });
 
