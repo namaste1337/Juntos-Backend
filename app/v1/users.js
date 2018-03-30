@@ -28,12 +28,12 @@ module.exports =  function(express, version, passport){
   // Handles signup request
   function signup(req, res, next){
 
-    // A requirement for registration calls for capturing a username,
-    // but do to the limitation of passport only supporting email or user.
-    // In the following we will check if the username passed by the client
+    // A requirement for the registration, calls for capturing a username,
+    // but do to the limitations of passport only supporting email or user.
+    // In the following we will check if the username sent by the client
     // exist in our users collection and return the approprite response.
-    // Once passport has handles the user creation we append the user name
-    // as the last operation of the sign up request.
+    // Once passport has handles the user creation we append the username
+    // to the user object as the last operation of the sign up request.
 
     let username = req.body.username;
 
@@ -45,7 +45,7 @@ module.exports =  function(express, version, passport){
 
       passport.authenticate(JSON_SINGUP_STRATEGY_KEY, function(err, user, info){
         if (err) { return next(err); }
-        // If the username is unavailable user = false
+        // If the username is unavailable, he user object is return as false.
         if (!user) { 
             return res.status(errorCodes.ERROR_CODE_409).jsend.fail({message:ERROR_EMAIL_UNAVAILABLE}); 
         }
@@ -56,6 +56,7 @@ module.exports =  function(express, version, passport){
             // If all is well lets append the username to the user object
             user.local.username = username;
 
+            // Save the user to the users collections and return a response
             user.save(function(err){
 
               if(err)
