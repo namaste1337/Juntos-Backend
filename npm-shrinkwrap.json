@@ -304,6 +304,11 @@
         }
       }
     },
+    "chance": {
+      "version": "1.0.16",
+      "resolved": "https://registry.npmjs.org/chance/-/chance-1.0.16.tgz",
+      "integrity": "sha512-2bgDHH5bVfAXH05SPtjqrsASzZ7h90yCuYT2z4mkYpxxYvJXiIydBFzVieVHZx7wLH1Ag2Azaaej2/zA1XUrNQ=="
+    },
     "chokidar": {
       "version": "1.7.0",
       "resolved": "https://registry.npmjs.org/chokidar/-/chokidar-1.7.0.tgz",
