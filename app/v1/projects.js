@@ -49,7 +49,7 @@ module.exports =  function(express, version, passport){
     project.createProject(projectObject).then(project => {
       res.jsend.success(projectModel.clean(project));
     }).catch(err => {
-      res.jsend.failure(error);
+      res.jsend.failure(err);
     });
 
 	} 
