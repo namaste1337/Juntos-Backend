@@ -23,13 +23,15 @@ autoIncrement.initialize(mongoose.connection);
 //Errors
 const MISSING_USERS_ARRAY_ERROR_STRING        = "Error: Missing userIdsArray parameter";
 const MISSING_INTIAL_MESSAGE_OBJECT_STRING    = "Error: Missing initialMessage parameter";
+const MISSING_MESSAGE_THREAD_OBJECT_STRING    = "Error: Missing messageThreadObjectId parameter";
+const MISSING_MESSAGE_STRING                  = "Error: Missing message parameter";
 
 /////////////////////////
 // Schema
 /////////////////////////
 
 // Defines the schema for our messages collection
-var messageThreadsSchema = mongoose.Schema({
+const messageThreadsSchema = mongoose.Schema({
 
     users : [Number],
     room : String,
@@ -45,6 +47,13 @@ var messageThreadsSchema = mongoose.Schema({
     last_update : { type : Date, default: Date.now}
 
 });
+
+
+
+/////////////////////////
+// Query Helpers
+/////////////////////////
+
 
 /////////////////////////
 // Static methods
@@ -62,17 +71,77 @@ messageThreadsSchema.statics.clean = function(messageEntity){
 
 }
 
-/////////////////////////
-// Query Helpers
-/////////////////////////
+/**
+ * Description: Appends a message to an existing message thread.
+ *
+ * @param {id} id The objectId of the messageThread to append the new message
+ *
+ * @param {messageObject} message The message object to append to the thread.
+ *
+ * @return {Object} Returns write operation results.
+**/
 
+messageThreadsSchema.statics.addMessageById= function(id, message){
+
+    return new Promise((resolve, reject) => {
+
+      if(id == null){
+        console.error(MISSING_MESSAGE_THREAD_OBJECT_STRING);
+        return;
+      }
+
+      if(message == null){
+        console.error(MISSING_MESSAGE_STRING);
+        return;
+      } 
+
+      //Insert the message to the document
+      this.update({_id :  id}, 
+        {$push: {messages: message}},
+        (error, writeOpResults) => {
+          if(error){
+            reject(error);
+            return;
+          }
+          if(writeOpResults != null)
+            resolve(writeOpResults);
+      })
+
+    });
+
+}
+
+messageThreadsSchema.methods.getMessageThread = function(messageThreadId, lastID){
+
+
+    // if(messageThreadId){
+
+
+
+    // }
+
+    //     // Validate parameters
+    // if(id == null){
+    //     console.error(MISSING_ID_PARAMETER_ERROR_STRING);
+    //     return;
+    // }
+
+
+    // if(lastId){
+    //     return this.find({'_id'> last_id}).limit(10);    
+    // }
+
+
+    // return this.find(query);
+
+}
 
 /////////////////////////
 // Instance methods
 /////////////////////////
 
 /**
- * Description: Creates a new message thread
+ * Description: Creates a new message thread.
  *
  * @param {Array} userArray An array contianing the user_ids of the 
  * participants of the message thread.
@@ -105,43 +174,17 @@ messageThreadsSchema.methods.createMessageThread  = function(userIdsArray, initi
         console.trace(error);
     }
 
-
-    console.log("Before");
     // Create new messsage thread
-    this.save((message) => {
-        console.log("Message Saved");
-        resolve(this);
+    this.save((error, document, isSaveSuccess) => {
+        if(error)
+            reject(error);
+        if(isSaveSuccess === 1)
+            resolve(document);
     }).catch(error =>{
         console.trace(error);
     });
 
  });
-
-}
-
-
-messageThreadsSchema.methods.getMessageThread = function(messageThreadID){
-
-
-    //     // Validate parameters
-    // if(id == null){
-    //     console.error(MISSING_ID_PARAMETER_ERROR_STRING);
-    //     return;
-    // }
-
-
-    // if(lastId){
-    //     return this.find({'_id'> last_id}).limit(10);    
-    // }
-
-
-    // return this.find(query);
-
-}
-
-messageThreadsSchema.methods.updateMessageThread = function(messageObject){
-
-
 
 }
 
@@ -156,7 +199,7 @@ messageThreadsSchema.methods.deleteUpdateThread = function(messageThreadID){
 //when creating a project entity.
 messageThreadsSchema.plugin(autoIncrement.plugin, {
     model: 'MessageThreads',
-    field: '"messageThread_id"',
+    field: 'messageThread_id',
     startAt: 1000
 });
 

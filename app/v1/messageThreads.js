@@ -8,8 +8,9 @@ const MessageThreadsModel     = require("./../models/messageThreads");
 // Common Files
 ///////////////////////// 
 
-const authenticate  = require("./../common/authentication")
-const errorCodes    = require("../common/errorCodes.js")
+const authenticate        = require("./../common/authentication")
+const errorCodes          = require("../common/errorCodes.js")
+const patchOperations     = require("./../common/patchOperations.js");
  
 module.exports =  function(express, version, passport){
 
@@ -19,6 +20,10 @@ module.exports =  function(express, version, passport){
 
   // Paths
   const MESSAGE_ROUTE = "/messageThreads";
+
+
+  // Constants 
+
 
   // const PROJECT_ID_ERROR = {
   // //   message: "Error: Missing id query parameter", 
@@ -43,12 +48,12 @@ module.exports =  function(express, version, passport){
 
   function createMessageThread(req, res){
 
-    let messageThreadModel  = new MessageThreadsModel();
-    let messageThreadObject = req.body;
+    let messageThreadModel        = new MessageThreadsModel();
+    let messageThreadObject       = req.body;
 
-    // Retrieve the users array from
-    let usersIdsArray = messageThreadObject.users;
-    let initialMessage = messageThreadObject.message;
+    // Retrieve the users_id and the initial message object from the body
+    let usersIdsArray             = messageThreadObject.users;
+    let initialMessage            = messageThreadObject.message;
 
 
     messageThreadModel.createMessageThread(usersIdsArray, initialMessage).then( messageThread => {
@@ -59,11 +64,37 @@ module.exports =  function(express, version, passport){
 
   }
 
+
+  function updateMessageThread(req, res){
+
+    // let messageThreadModel        = new MessageThreadsModel();
+    let messageThreadPatchObject  = req.body;
+
+    let operation                 = messageThreadPatchObject.operation;
+    let object_id                 = req.params.id;
+    let message                   = messageThreadPatchObject.message;
+
+
+    if(operation == patchOperations.PATCH_ADD_MESSAGE){
+
+      MessageThreadsModel.addMessageById(object_id, message).then((writeOperationResults) => {
+        res.jsend.success(writeOperationResults);
+      }).catch((error) => {
+        console.trace(error);
+      })
+
+    }
+
+    // res.jsend.fail("Missing operation parameter");
+
+  }
+
   /////////////////////////
   // Routes
   /////////////////////////
 
   version.use(MESSAGE_ROUTE, express.Router().post("", createMessageThread));
+  version.use(MESSAGE_ROUTE, express.Router().patch("/:id", updateMessageThread));
   // version.use(PROJECT_ROUTE, authenticate.isLoggedIn, express.Router().get("", getProjects));
   // version.use(PROJECT_ROUTE, authenticate.isLoggedIn, express.Router().get("/:id", getProjectById));
 
