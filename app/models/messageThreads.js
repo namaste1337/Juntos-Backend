@@ -26,6 +26,7 @@ const MISSING_INTIAL_MESSAGE_OBJECT_STRING    = "Error: Missing initialMessage p
 const MISSING_MESSAGE_THREAD_OBJECT_STRING    = "Error: Missing messageThreadObjectId parameter";
 const MISSING_MESSAGE_STRING                  = "Error: Missing message parameter";
 
+
 /////////////////////////
 // Schema
 /////////////////////////
@@ -33,18 +34,18 @@ const MISSING_MESSAGE_STRING                  = "Error: Missing message paramete
 // Defines the schema for our messages collection
 const messageThreadsSchema = mongoose.Schema({
 
-    users : [Number],
-    room : String,
-    messages : [{
-        text: String,
-        createdAt: { type : Date, default: Date.now },
-        user: {
-            _id: Number,
-            name: String,
-            avatar: String
-        },
-    }],
-    last_update : { type : Date, default: Date.now}
+  users : [Number],
+  room : String,
+  messages : [{
+      text: String,
+      createdAt: { type : Date, default: Date.now },
+      user: {
+          _id: Number,
+          name: String,
+          avatar: String
+      },
+  }],
+  last_update : { type : Date, default: Date.now}
 
 });
 
@@ -78,61 +79,65 @@ messageThreadsSchema.statics.clean = function(messageEntity){
  *
  * @param {messageObject} message The message object to append to the thread.
  *
- * @return {Object} Returns write operation results.
+ * @return {Object} Returns a Promise
 **/
 
 messageThreadsSchema.statics.addMessageById= function(id, message){
 
-    return new Promise((resolve, reject) => {
+  return new Promise((resolve, reject) => {
 
-      if(id == null){
-        console.error(MISSING_MESSAGE_THREAD_OBJECT_STRING);
-        return;
-      }
+    if(id == null){
+      console.error(MISSING_MESSAGE_THREAD_OBJECT_STRING);
+      return;
+    }
 
-      if(message == null){
-        console.error(MISSING_MESSAGE_STRING);
-        return;
-      } 
+    if(message == null){
+      console.error(MISSING_MESSAGE_STRING);
+      return;
+    } 
 
-      //Insert the message to the document
-      this.update({_id :  id}, 
-        {$push: {messages: message}},
-        (error, writeOpResults) => {
-          if(error){
-            reject(error);
-            return;
-          }
-          if(writeOpResults != null)
-            resolve(writeOpResults);
-      })
+    //Insert the message to the document
+    this.update({_id :  id}, 
+      {$push: {messages: message}},
+      (error, writeOpResults) => {
+        if(error){
+          reject(error);
+          return;
+        }
+        if(writeOpResults != null)
+          resolve(writeOpResults);
+    })
 
-    });
+  });
 
 }
 
-messageThreadsSchema.methods.getMessageThread = function(messageThreadId, lastID){
+/**
+ * Description: Retrieves a page of messages from a thread by ObjectId.
+ *
+ * @param {ObjectId} messageThreadObjectId The objectId 
+ *
+ * @param {Number} page The page of items to be returned. Returns the first page by default if no page is provided.
+ *
+ * @param {Number} limit The number of items to be returned in a page. Returns 10 items by defualt if no page is provided.
+ *
+ * @return {Array} Returns a Promise.
+**/
 
 
-    // if(messageThreadId){
+messageThreadsSchema.statics.getMessageThreadPageById = function(messageThreadObjectId, page, limit){
+  console.log(arguments);
 
+  if(messageThreadObjectId == null){
+    console.error(MISSING_MESSAGE_THREAD_OBJECT_STRING);
+    return;
+  }
 
-
-    // }
-
-    //     // Validate parameters
-    // if(id == null){
-    //     console.error(MISSING_ID_PARAMETER_ERROR_STRING);
-    //     return;
-    // }
-
-
-    // if(lastId){
-    //     return this.find({'_id'> last_id}).limit(10);    
-    // }
-
-
-    // return this.find(query);
+  return this.find(
+    {_id: messageThreadObjectId}, 
+    {messages: {$slice: [limit * (page - 1), limit ]}, 
+    users: 0, room: 0, __v: 0, messageThread_id: 0, _id: 0}
+  );
 
 }
 
@@ -148,7 +153,7 @@ messageThreadsSchema.methods.getMessageThread = function(messageThreadId, lastID
  *
  * @param {Object} initialMessage The initial message to added to the thread
  *
- * @return {Object} Returns a messageThread object
+ * @return {Object} Returns a Promise, when resolved 
 **/
 
 messageThreadsSchema.methods.createMessageThread  = function(userIdsArray, initialMessage){

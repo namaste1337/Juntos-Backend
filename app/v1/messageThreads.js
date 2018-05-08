@@ -46,6 +46,25 @@ module.exports =  function(express, version, passport){
   // Request Handlers 
   /////////////////////////
 
+  function getMessagesFromThread(req, res){
+
+    let page                  = parseInt(req.query.page) || 0;
+    let limit                 = parseInt(req.query.limit)|| 10;
+    let id                    = req.params.id;
+
+    console.log(id, page, limit);
+
+    MessageThreadsModel.getMessageThreadPageById(id, page, limit)
+    .then((messages) => {
+      return res.jsend.success(messages);
+    }).catch((err) => {
+      console.log(err);
+      // 500 internal error
+      return res.jsend.fail(err);
+    });
+
+  }
+
   function createMessageThread(req, res){
 
     let messageThreadModel        = new MessageThreadsModel();
@@ -57,9 +76,9 @@ module.exports =  function(express, version, passport){
 
 
     messageThreadModel.createMessageThread(usersIdsArray, initialMessage).then( messageThread => {
-      res.jsend.success(messageThread);
+      return res.jsend.success(messageThread);
     }).catch(err => {
-      res.jsend.fail(err);
+      return res.jsend.fail(err);
     });
 
   }
@@ -78,14 +97,15 @@ module.exports =  function(express, version, passport){
     if(operation == patchOperations.PATCH_ADD_MESSAGE){
 
       MessageThreadsModel.addMessageById(object_id, message).then((writeOperationResults) => {
-        res.jsend.success(writeOperationResults);
+        return res.jsend.success(writeOperationResults);
       }).catch((error) => {
         console.trace(error);
+        return res.jsend.fail("Error:");
       })
 
     }
 
-    // res.jsend.fail("Missing operation parameter");
+    return res.jsend.fail("Missing operation parameter");
 
   }
 
@@ -94,8 +114,8 @@ module.exports =  function(express, version, passport){
   /////////////////////////
 
   version.use(MESSAGE_ROUTE, express.Router().post("", createMessageThread));
+  version.use(MESSAGE_ROUTE, express.Router().get("/:id", getMessagesFromThread));
   version.use(MESSAGE_ROUTE, express.Router().patch("/:id", updateMessageThread));
-  // version.use(PROJECT_ROUTE, authenticate.isLoggedIn, express.Router().get("", getProjects));
   // version.use(PROJECT_ROUTE, authenticate.isLoggedIn, express.Router().get("/:id", getProjectById));
 
 }
