@@ -112,6 +112,15 @@ messageThreadsSchema.statics.addMessageById= function(id, message){
 
 }
 
+messageThreadsSchema.statics.getMessageThreads = function(lastId, limit){
+
+  if(i)
+
+
+  return this.find('_id' > lastMessageThreadObectId).limit(limit);
+
+}
+
 /**
  * Description: Retrieves a page of messages from a thread by ObjectId.
  *
