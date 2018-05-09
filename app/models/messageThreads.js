@@ -130,7 +130,7 @@ messageThreadsSchema.statics.getMessageThreads = function(lastId, limit){
  *
  * @param {Number} limit The number of items to be returned in a page. Returns 10 items by defualt if no page is provided.
  *
- * @return {Array} Returns a Promise.
+ * @return {Promise} Returns a Promise.
 **/
 
 
@@ -162,7 +162,7 @@ messageThreadsSchema.statics.getMessageThreadPageById = function(messageThreadOb
  *
  * @param {Object} initialMessage The initial message to added to the thread
  *
- * @return {Object} Returns a Promise, when resolved 
+ * @return {Promise} Returns a Promise.
 **/
 
 messageThreadsSchema.methods.createMessageThread  = function(userIdsArray, initialMessage){
