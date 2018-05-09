@@ -105,7 +105,8 @@ module.exports =  function(express, version, passport){
     let initialMessage            = messageThreadObject.message;
 
 
-    messageThreadModel.createMessageThread(usersIdsArray, initialMessage).then( messageThread => {
+    MessageThreadService.createMessageThread(usersIdsArray, initialMessage)
+    .then( messageThread => {
       return res.jsend.success(messageThread);
     }).catch(err => {
       return res.jsend.fail(err);
@@ -124,13 +125,14 @@ module.exports =  function(express, version, passport){
 
     if(operation == patchOperations.PATCH_ADD_MESSAGE){
 
-      MessageThreadsModel.addMessageById(object_id, message).then((writeOperationResults) => {
+      MessageThreadService.addMessageById(object_id, message)
+      .then((writeOperationResults) => {
         return res.jsend.success(writeOperationResults);
       }).catch((error) => {
-        console.trace(error);
-        return res.jsend.fail("Error:");
-      })
-
+      console.trace(error);
+        // 500 ineternal error
+        return res.jsend.fail("Error");
+      });
     }
 
     return res.jsend.fail("Missing operation parameter");
@@ -142,7 +144,7 @@ module.exports =  function(express, version, passport){
   /////////////////////////
 
   version.use(MESSAGE_ROUTE, express.Router().post("", createMessageThread));
-  version.use(MESSAGE_ROUTE, express.Router().get("/", getMessageThreads));
+  version.use(MESSAGE_ROUTE, express.Router().get("/", getMessageAllThreads));
   version.use(MESSAGE_ROUTE, express.Router().get("/:id/messages", getMessagesById));
   version.use(MESSAGE_ROUTE, express.Router().patch("/:id", updateMessageThread));
   // version.use(PROJECT_ROUTE, authenticate.isLoggedIn, express.Router().get("/:id", getProjectById));
