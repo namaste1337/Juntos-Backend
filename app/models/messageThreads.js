@@ -145,7 +145,7 @@ messageThreadsSchema.statics.getMessageThreadPageById = function(messageThreadOb
   return this.find(
     {_id: messageThreadObjectId}, 
     {messages: {$slice: [limit * (page - 1), limit ]}, 
-    users: 0, room: 0, __v: 0, messageThread_id: 0, _id: 0}
+    users: 0, room: 0, __v: 0, messageThread_id: 0, _id: 0} // Exclude fields
   );
 
 }
