@@ -55,24 +55,19 @@ module.exports =  function(express, version, passport){
   // Request Handlers 
   /////////////////////////
 
+  function getAllMessageThreads(req, res){
 
-  function getMessageThreads(){
+      // Get filters
+      let userId = parseInt(req.query.user_id);
 
-    let id        = req.params.id;
-    let usersId   = parseInt(req.query.user_id);
-
-    if(userId != undefined || userId != null ){
-      MessageThreadService.getAllMessageThreads()
+      MessageThreadService.getAllMessageThreads(userId)
       .then((messageThreads) => {
-        res.jsend.success(messageThreads);
+        return res.jsend.success(messageThreads);
       }).catch((error) => {
         console.log(error);
         // 500 Internal error
       })
-    }
-
-    // Return error that userId  is missing.
-
+ 
   }
 
   function getMessagesById(req, res){
@@ -144,7 +139,7 @@ module.exports =  function(express, version, passport){
   /////////////////////////
 
   version.use(MESSAGE_ROUTE, express.Router().post("", createMessageThread));
-  version.use(MESSAGE_ROUTE, express.Router().get("/", getMessageAllThreads));
+  version.use(MESSAGE_ROUTE, express.Router().get("/", getAllMessageThreads));
   version.use(MESSAGE_ROUTE, express.Router().get("/:id/messages", getMessagesById));
   version.use(MESSAGE_ROUTE, express.Router().patch("/:id", updateMessageThread));
   // version.use(PROJECT_ROUTE, authenticate.isLoggedIn, express.Router().get("/:id", getProjectById));
