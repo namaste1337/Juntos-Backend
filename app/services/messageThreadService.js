@@ -29,6 +29,19 @@ class MessagesThreadService {
     return MessageThreadsModel.find(query);
   }
 
+  static addMessageById(object_id, message){
+
+    return MessageThreadsModel.addMessageById(object_id, message)
+
+  }
+
+  static createMessageThread(usersIdsArray, initialMessage){
+
+    let messageThreadModel = new MessageThreadsModel();
+
+    return messageThreadModel.createMessageThread(usersIdsArray, initialMessage);
+
+  }
 
 }
 
