@@ -1,8 +1,5 @@
 /////////////////////////
-// Models
-///////////////////////// 
 
-const MessageThreadsModel     = require("./../models/messageThreads");
 
 /////////////////////////
 // Common Files
@@ -11,6 +8,13 @@ const MessageThreadsModel     = require("./../models/messageThreads");
 const authenticate        = require("./../common/authentication")
 const errorCodes          = require("../common/errorCodes.js")
 const patchOperations     = require("./../common/patchOperations.js");
+
+////////////////////////
+// Services
+////////////////////////
+
+const MessageThreadService = require('./../services/messageThreadService');
+
  
 module.exports =  function(express, version, passport){
 
@@ -42,26 +46,52 @@ module.exports =  function(express, version, passport){
   //   example: "/projects/1522"
   // };
 
+  ////////////////////////
+  //  Helper Functions
+  ////////////////////////
+
+
   /////////////////////////
   // Request Handlers 
   /////////////////////////
 
-  function getMessagesFromThread(req, res){
 
-    let page                  = parseInt(req.query.page) || 0;
+  function getMessageThreads(){
+
+    let id        = req.params.id;
+    let usersId   = parseInt(req.query.user_id);
+
+    if(userId != undefined || userId != null ){
+      MessageThreadService.getAllMessageThreads()
+      .then((messageThreads) => {
+        res.jsend.success(messageThreads);
+      }).catch((error) => {
+        console.log(error);
+        // 500 Internal error
+      })
+    }
+
+    // Return error that userId  is missing.
+
+  }
+
+  function getMessagesById(req, res){
+
+    let page                  = parseInt(req.query.page) || 1;
     let limit                 = parseInt(req.query.limit)|| 10;
     let id                    = req.params.id;
 
-    console.log(id, page, limit);
+    if(id != undefined ){
+      MessageThreadService.getMessagesById(id, page, limit)
+      .then((messages) => {
+        return res.jsend.success(messages);
+      }).catch((error) =>{
+        console.log(error);
+        // 500 Internal error
+      })
+    }
 
-    MessageThreadsModel.getMessageThreadPageById(id, page, limit)
-    .then((messages) => {
-      return res.jsend.success(messages);
-    }).catch((err) => {
-      console.log(err);
-      // 500 internal error
-      return res.jsend.fail(err);
-    });
+    // return res.jsend.fail("Missing ID parameter");
 
   }
 
@@ -83,10 +113,8 @@ module.exports =  function(express, version, passport){
 
   }
 
-
   function updateMessageThread(req, res){
 
-    // let messageThreadModel        = new MessageThreadsModel();
     let messageThreadPatchObject  = req.body;
 
     let operation                 = messageThreadPatchObject.operation;
@@ -114,7 +142,8 @@ module.exports =  function(express, version, passport){
   /////////////////////////
 
   version.use(MESSAGE_ROUTE, express.Router().post("", createMessageThread));
-  version.use(MESSAGE_ROUTE, express.Router().get("/:id", getMessagesFromThread));
+  version.use(MESSAGE_ROUTE, express.Router().get("/", getMessageThreads));
+  version.use(MESSAGE_ROUTE, express.Router().get("/:id/messages", getMessagesById));
   version.use(MESSAGE_ROUTE, express.Router().patch("/:id", updateMessageThread));
   // version.use(PROJECT_ROUTE, authenticate.isLoggedIn, express.Router().get("/:id", getProjectById));
 
