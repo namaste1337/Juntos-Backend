@@ -20,6 +20,12 @@ const configDB     	 = require("./config/database.js");
 const configSession  = require("./config/session.js"); 
 
 /////////////////////////
+// Load Extensions
+///////////////////////// 
+
+require("./app/extensions/array.js");
+
+/////////////////////////
 // Constants
 ///////////////////////// 
 
