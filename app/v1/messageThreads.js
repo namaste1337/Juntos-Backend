@@ -95,7 +95,6 @@ module.exports =  function(express, version, passport){
 
   function createMessageThread(req, res){
 
-    let messageThreadModel        = new MessageThreadsModel();
     let messageThreadObject       = req.body;
 
     // Retrieve the users_id and the initial message object from the body
