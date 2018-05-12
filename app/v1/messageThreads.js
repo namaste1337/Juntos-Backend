@@ -25,24 +25,6 @@ module.exports =  function(express, version, passport){
   // Paths
   const MESSAGE_ROUTE = "/messageThreads";
 
-  // const PROJECT_ID_ERROR = {
-  // //   message: "Error: Missing id query parameter", 
-  // //   required_parameters:"projects/:id", 
-  // //   example: "/projects/1522"
-  // // };
-  // Errors
-  // const PROJECT_BY_DISTANCE_ERROR = {
-  //   message: "Error: Missing a geo filter parameters", 
-  //   required_parameters:"lat, lng, radius", 
-  //   example: "?geo=true&lat=123.4&lng=87.2&radius=60000"
-  // };
-  // const PROJECT_ID_ERROR = {
-  //   message: "Error: Missing id query parameter", 
-  //   required_parameters:"projects/:id", 
-  //   example: "/projects/1522"
-  // };
-
-
   /////////////////////////
   // Request Handlers 
   /////////////////////////
@@ -65,11 +47,14 @@ module.exports =  function(express, version, passport){
  
   }
 
+  // Returns a messages from a MessageThread, by the thread _id
   function getMessagesById(req, res){
 
+    // Get filters
     let page                  = parseInt(req.query.page) || 1;
     let limit                 = parseInt(req.query.limit)|| 10;
-    let id                    = req.params.id;
+    // Get MessageThread ID
+    let id                    = req.params.id; 
 
     if(id != undefined ){
       MessageThreadService.getMessagesById(id, page, limit)
@@ -81,7 +66,8 @@ module.exports =  function(express, version, passport){
       })
     }
 
-    // return res.jsend.fail("Missing ID parameter");
+    // Return error if no MessageThread ID has been passed
+    return res.jsend.fail("Missing id parameter");
 
   }
 
@@ -106,7 +92,6 @@ module.exports =  function(express, version, passport){
   function updateMessageThread(req, res){
 
     let messageThreadPatchObject  = req.body;
-
     let operation                 = messageThreadPatchObject.operation;
     let object_id                 = req.params.id;
     let message                   = messageThreadPatchObject.message;
