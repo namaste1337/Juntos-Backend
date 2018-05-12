@@ -14,15 +14,18 @@ class MessagesThreadService {
 
   }
 
-  static getAllMessageThreads(userId){
+  static getAllMessageThreads(usersIdsArray, isUniqueSet){
 
     let query = {};
 
-    // Check for the user_id parameter
-    if(userId != null || userId != undefined){
-      query = Object.assing(query, {
-        users: userId 
-      });
+    // Check for the usersIdsArray parameter
+    if(usersIdsArray != null || usersIdsArray != undefined){
+
+      if(isUniqueSet){
+        query = {users: {$size: usersIdsArray.length, $all: usersIdsArray}}
+      }else{
+        query = { users: { $all: usersIdsArray }};
+      }
     }
 
     // Return all threads
