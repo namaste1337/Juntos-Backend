@@ -25,10 +25,6 @@ module.exports =  function(express, version, passport){
   // Paths
   const MESSAGE_ROUTE = "/messageThreads";
 
-
-  // Constants 
-
-
   // const PROJECT_ID_ERROR = {
   // //   message: "Error: Missing id query parameter", 
   // //   required_parameters:"projects/:id", 
@@ -45,10 +41,6 @@ module.exports =  function(express, version, passport){
   //   required_parameters:"projects/:id", 
   //   example: "/projects/1522"
   // };
-
-  ////////////////////////
-  //  Helper Functions
-  ////////////////////////
 
 
   /////////////////////////
