@@ -29,6 +29,7 @@ module.exports =  function(express, version, passport){
   // Request Handlers 
   /////////////////////////
 
+
   function getAllMessageThreads(req, res){
 
       // Get filters
@@ -78,9 +79,10 @@ module.exports =  function(express, version, passport){
     // Retrieve the users_id and the initial message object from the body
     let usersIdsArray             = messageThreadObject.users;
     let initialMessage            = messageThreadObject.message;
+    let room                      = messageThreadObject.room;
 
 
-    MessageThreadService.createMessageThread(usersIdsArray, initialMessage)
+    MessageThreadService.createMessageThread(usersIdsArray, initialMessage, room)
     .then( messageThread => {
       return res.jsend.success(messageThread);
     }).catch(err => {

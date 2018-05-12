@@ -7,8 +7,6 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema,
     autoIncrement = require('mongoose-auto-increment');
 
-var Chance = require('chance');
-
 /////////////////////////
 // Initializations
 /////////////////////////
@@ -114,8 +112,12 @@ messageThreadsSchema.statics.addMessageById= function(id, message){
 
 messageThreadsSchema.statics.getMessageThreads = function(lastId, limit){
 
-  if(i)
+  const MISSONG_LAST_ID_PARAMETER_STTRING = "Missing lastId parameter";
 
+  if(lastId == null || lastId == undefined){
+    console.log(MISSONG_LAST_ID_PARAMETER_STTRING);
+    return;
+  }
 
   return this.find('_id' > lastMessageThreadObectId).limit(limit);
 
@@ -165,7 +167,7 @@ messageThreadsSchema.statics.getMessageThreadPageById = function(messageThreadOb
  * @return {Promise} Returns a Promise.
 **/
 
-messageThreadsSchema.methods.createMessageThread  = function(userIdsArray, initialMessage){
+messageThreadsSchema.methods.createMessageThread  = function(userIdsArray, initialMessage, room){
 
  return new Promise((resolve, reject) => {
 
@@ -182,7 +184,7 @@ messageThreadsSchema.methods.createMessageThread  = function(userIdsArray, initi
     // Assign the users and room name to the thread
     try {
         this.users      = userIdsArray;
-        this.room       = new Chance().guid();
+        this.room       = room;
         this.messages   = initialMessage
     } catch(error){
         console.trace(error);

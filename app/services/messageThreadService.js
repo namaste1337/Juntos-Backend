@@ -1,3 +1,5 @@
+// This file will 
+
 
 /////////////////////////
 // Models
@@ -38,11 +40,11 @@ class MessagesThreadService {
 
   }
 
-  static createMessageThread(usersIdsArray, initialMessage){
+  static createMessageThread(usersIdsArray, initialMessage, room){
 
     let messageThreadModel = new MessageThreadsModel();
 
-    return messageThreadModel.createMessageThread(usersIdsArray, initialMessage);
+    return messageThreadModel.createMessageThread(usersIdsArray, initialMessage, room);
 
   }
 
