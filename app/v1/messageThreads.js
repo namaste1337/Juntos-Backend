@@ -36,8 +36,6 @@ module.exports =  function(express, version, passport){
       let userIdFilter      = req.query.user_ids != undefined ? req.query.user_ids.split(",").mapToNumber() : undefined;
       let isUniqueSetFilter = (req.query.unique_set == "true") || false;
 
-      console.log(userIdFilter);
-
       MessageThreadService.getAllMessageThreads(userIdFilter, isUniqueSetFilter)
       .then((messageThreads) => {
         return res.jsend.success(messageThreads);
