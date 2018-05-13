@@ -34,7 +34,7 @@ module.exports =  function(express, version, passport){
 
       // Get filters
       let userIdFilter      = req.query.user_ids != undefined ? req.query.user_ids.split(",").mapToNumber() : undefined;
-      let isUniqueSetFilter = req.query.unique_set || false;
+      let isUniqueSetFilter = (req.query.unique_set == "true") || false;
 
       console.log(userIdFilter);
 
