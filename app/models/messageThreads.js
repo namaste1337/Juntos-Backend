@@ -176,16 +176,14 @@ messageThreadsSchema.methods.createMessageThread  = function(userIdsArray, initi
         return;
     }
 
-    if(initialMessage == null || typeof initialMessage != "object" ){
-        reject(MISSING_INTIAL_MESSAGE_OBJECT_STRING);
-        return;
-    }
-
     // Assign the users and room name to the thread
     try {
         this.users      = userIdsArray;
         this.room       = room;
-        this.messages   = initialMessage
+
+        if(initialMessage != null || typeof initialMessage == "object" )
+          this.messages   = initialMessage
+        
     } catch(error){
         console.trace(error);
     }
