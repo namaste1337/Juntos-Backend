@@ -63,10 +63,10 @@ module.exports =  function(express, version, passport){
         console.log(error);
         // 500 Internal error
       })
+    }else{
+      // Return error if no MessageThread ID has been passed
+      return res.jsend.fail("Missing id parameter");
     }
-
-    // Return error if no MessageThread ID has been passed
-    return res.jsend.fail("Missing id parameter");
 
   }
 
@@ -91,11 +91,9 @@ module.exports =  function(express, version, passport){
 
   function updateMessageThread(req, res){
 
-    let messageThreadPatchObject  = req.body;
-    let operation                 = messageThreadPatchObject.operation;
+    let message                   = req.body.message;
+    let operation                 = req.body.operation;
     let object_id                 = req.params.id;
-    let message                   = messageThreadPatchObject.message;
-
 
     if(operation == patchOperations.PATCH_ADD_MESSAGE){
 
@@ -107,9 +105,10 @@ module.exports =  function(express, version, passport){
         // 500 ineternal error
         return res.jsend.fail("Error");
       });
+    }else{
+      return res.jsend.fail("Missing operation parameter");
     }
 
-    return res.jsend.fail("Missing operation parameter");
 
   }
 
