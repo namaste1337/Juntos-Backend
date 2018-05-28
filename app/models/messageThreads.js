@@ -23,7 +23,7 @@ const MISSING_USERS_ARRAY_ERROR_STRING        = "Error: Missing userIdsArray par
 const MISSING_INTIAL_MESSAGE_OBJECT_STRING    = "Error: Missing initialMessage parameter";
 const MISSING_MESSAGE_THREAD_OBJECT_STRING    = "Error: Missing messageThreadObjectId parameter";
 const MISSING_MESSAGE_STRING                  = "Error: Missing message parameter";
-
+const MISSONG_LAST_ID_PARAMETER_STTRING       = "Missing lastId parameter";
 
 /////////////////////////
 // Schema
@@ -110,9 +110,17 @@ messageThreadsSchema.statics.addMessageById= function(id, message){
 
 }
 
-messageThreadsSchema.statics.getMessageThreads = function(lastId, limit){
+/**
+ * Description: Retrieves the next page of MessagesThreads by the lastId(Object Id). 
+ *
+ * @param {ObjectId} lastId The ObjectId of last message thread from the previous page.
+ *
+ * @param {Number} limit The number of message threads to be returned.
+ *
+ * @return {Promise} Returns a Promise.
+**/
 
-  const MISSONG_LAST_ID_PARAMETER_STTRING = "Missing lastId parameter";
+messageThreadsSchema.statics.getMessageThreads = function(lastId, limit){
 
   if(lastId == null || lastId == undefined){
     console.log(MISSONG_LAST_ID_PARAMETER_STTRING);
