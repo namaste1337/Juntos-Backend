@@ -27,11 +27,8 @@
     "morgan": "~1.0.0",
     "nodemon": "^1.12.1",
     "passport": "~0.1.17",
-    "passport-facebook": "~1.0.2",
-    "passport-google-oauth": "~0.1.5",
     "passport-json": "^1.2.0",
     "passport-local": "~0.1.6",
-    "passport-twitter": "~1.0.2"
   },
   "devDependencies": {
     "mocha": "^3.5.3",
